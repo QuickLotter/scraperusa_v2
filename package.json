@@ -1,0 +1,26 @@
+{
+  "name": "scraperusa",
+  "version": "1.0.0",
+  "main": "dist/scheduler/scheduler.js",
+  "scripts": {
+    "dev": "npx ts-node src/scheduler/scheduler.ts",
+    "test": "npx ts-node src/testScraper.ts",
+    "build": "tsc",
+    "start": "node dist/scheduler/scheduler.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.5",
+    "axios": "^1.6.2",
+    "cheerio": "^1.1.2",
+    "dotenv": "^16.4.5",
+    "jsdom": "^24.0.0",
+    "linkedom": "^0.18.12",
+    "luxon": "^3.4.3"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^21.1.2",
+    "@types/node": "^20.10.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
