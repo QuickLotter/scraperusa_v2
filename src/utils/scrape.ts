@@ -1,4 +1,3 @@
-// src/utils/scrape.ts
 import { parseHTML } from "linkedom";
 import { GameDefinition, ScrapedResult } from "../types";
 
@@ -7,14 +6,17 @@ function clean(t: string | null | undefined): string | null {
   return t.replace(/\s+/g, " ").trim();
 }
 
+function findMoney(text: string | null): string | null {
+  if (!text) return null;
+  const m = text.match(/\$\s*\d[\d,\.]*/);
+  return m ? m[0] : null;
+}
+
 export async function scrapeGame(
   game: GameDefinition
 ): Promise<ScrapedResult | false> {
   console.log(`🔍 Scraping: ${game.displayName}`);
 
-  // ------------------------------------------------
-  // FETCH
-  // ------------------------------------------------
   let resp: Response;
   try {
     resp = await fetch(game.url, {
@@ -32,29 +34,23 @@ export async function scrapeGame(
   const { document } = parseHTML(html);
 
   const card = document.querySelector(".c-draw-card");
-  if (!card) {
-    console.error("❌ Nenhum .c-draw-card encontrado");
-    return false;
-  }
+  if (!card) return false;
 
-  // ------------------------------------------------
+  // ----------------------------------
   // DATE
-  // ------------------------------------------------
+  // ----------------------------------
   const rawDate =
     card.querySelector(".c-draw-card__draw-date")?.textContent ?? "";
-  const match = rawDate.match(/([A-Za-z]{3,}\s+\d{1,2},\s*\d{4})/);
 
-  if (!match) {
-    console.error("⚠ Data inválida");
-    return false;
-  }
+  const match = rawDate.match(/([A-Za-z]{3,}\s+\d{1,2},\s*\d{4})/);
+  if (!match) return false;
 
   const drawDate = new Date(match[1]);
   const draw_date = drawDate.toISOString().split("T")[0];
 
-  // ------------------------------------------------
+  // ----------------------------------
   // NUMBERS
-  // ------------------------------------------------
+  // ----------------------------------
   const balls = [...card.querySelectorAll(".c-ball")].map((el) =>
     Number(el.textContent.trim())
   );
@@ -64,58 +60,76 @@ export async function scrapeGame(
     ? balls[game.mainNumbers] ?? null
     : null;
 
-  // ------------------------------------------------
-  // JACKPOT (ATUAL)
-  // ------------------------------------------------
-  const est_jackpot =
-    clean(card.querySelector(".c-draw-card__prize-value")?.textContent) || null;
-
-  // ------------------------------------------------
-  // NEXT JACKPOT (CORREÇÃO AQUI!)
-  //
-  // Precisamos localizar o bloco onde:
-  //    .c-state-short-info__title includes "Next"
-  //    AND includes "jackpot"
-  //
-  // ------------------------------------------------
+  // ===================================================================
+  // UNIVERSAL PRIZE LOGIC (pega Top prize / Jackpot / Next top prize)
+  // ===================================================================
+  let est_jackpot: string | null = null;
   let next_est_jackpot: string | null = null;
+  let cash_value: string | null = null;
   let next_cash_value: string | null = null;
 
-  const boxes = [...document.querySelectorAll(".c-state-short-info__box")];
+  // ------------------------
+  // 1. TOP PRIZE / JACKPOT (Atual)
+  // ------------------------
+  const prizeLabel = clean(
+    card.querySelector(".c-draw-card__metric-label")?.textContent
+  );
+  const prizeValue = clean(
+    card.querySelector(".c-draw-card__prize-value")?.textContent
+  );
 
-  for (const box of boxes) {
+  if (prizeLabel && prizeValue) {
+    const prizeLower = prizeLabel.toLowerCase();
+
+    if (prizeLower.includes("top prize")) {
+      est_jackpot = prizeValue;
+      next_est_jackpot = prizeValue; // regra confirmada
+    }
+
+    if (prizeLower.includes("jackpot")) {
+      est_jackpot = prizeValue;
+      next_est_jackpot = prizeValue;
+    }
+  }
+
+  // -----------------------------
+  // 2. PROXIMO PRÊMIO (lado direito)
+  // -----------------------------
+  const infoBoxes = [...document.querySelectorAll(".c-state-short-info__box")];
+
+  for (const box of infoBoxes) {
     const title = clean(
       box.querySelector(".c-state-short-info__title")?.textContent
     );
-    const subtitle = clean(
+    const value = clean(
       box.querySelector(".c-state-short-info__subtitle")?.textContent
     );
+    if (!title || !value) continue;
 
-    if (!title || !subtitle) continue;
+    const ttl = title.toLowerCase();
 
-    const titleLower = title.toLowerCase();
-
-    // -------------------------------
-    // NEXT EST. JACKPOT – PEGAR APENAS VALORES $
-    // -------------------------------
-    if (
-      titleLower.includes("next") &&
-      (titleLower.includes("jackpot") || titleLower.includes("est. jackpot"))
-    ) {
-      const jackpotMatch = subtitle.match(/\$\s*\d[\d,\.]*/);
-      if (jackpotMatch) {
-        next_est_jackpot = jackpotMatch[0];
-      }
+    // Next top prize
+    if (ttl.includes("next top prize")) {
+      const m = findMoney(value);
+      if (m) next_est_jackpot = m;
     }
 
-    // -------------------------------
-    // NEXT CASH VALUE
-    // -------------------------------
-    if (titleLower.includes("cash value")) {
-      const cashMatch = subtitle.match(/\$\s*\d[\d,\.]*/);
-      if (cashMatch) {
-        next_cash_value = cashMatch[0];
-      }
+    // Next jackpot
+    if (ttl.includes("next") && ttl.includes("jackpot")) {
+      const m = findMoney(value);
+      if (m) next_est_jackpot = m;
+    }
+
+    // Cash Value Atual
+    if (ttl.includes("cash value")) {
+      const m = findMoney(value);
+      if (m) cash_value = m;
+    }
+
+    // Next Cash Value
+    if (ttl.includes("cash value") && ttl.includes("next")) {
+      const m = findMoney(value);
+      if (m) next_cash_value = m;
     }
   }
 
@@ -125,7 +139,7 @@ export async function scrapeGame(
     numbers,
     extra_number,
     est_jackpot,
-    cash_value: null,
+    cash_value,
     next_est_jackpot,
     next_cash_value,
   };

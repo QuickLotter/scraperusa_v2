@@ -1,66 +1,48 @@
 // src/scheduler/timeWindow.ts
 
-export const FORCE_ALL = true; // ← FORÇAR TODOS OS JOGOS PARA TESTE
+export const FORCE_ALL = false; // ← deixe true apenas para testes
 
 /**
- * Estrutura padrão das janelas por jogo.
- * Horários reais seriam usados quando FORCE_ALL = false.
+ * Converte "09:00 PM" → minutos totais (ex: 1260)
  */
-export const DRAW_WINDOWS: Record<string, { start: string; end: string }> = {
-  //-----------------------
-  // NEW YORK
-  //-----------------------
-  megamillions_ny: { start: "22:45", end: "23:59" },
-  powerball_ny: { start: "22:30", end: "23:59" },
-  cash4life_ny: { start: "20:45", end: "23:59" },
-  pick10_ny: { start: "12:40", end: "13:59" },
-  lotto_ny: { start: "22:00", end: "23:59" },
-  take5midday_ny: { start: "14:00", end: "15:00" },
-  take5evening_ny: { start: "22:30", end: "23:59" },
-  win4midday_ny: { start: "14:00", end: "15:00" },
-  win4evening_ny: { start: "22:30", end: "23:59" },
-  numbersmidday_ny: { start: "14:00", end: "15:00" },
-  numbersevening_ny: { start: "22:30", end: "23:59" },
+function parseETToMinutes(timeET: string): number {
+  const [hm, ampm] = timeET.split(" ");
+  let [h, m] = hm.split(":").map(Number);
 
-  //-----------------------
-  // PENNSYLVANIA
-  //-----------------------
-  pick2midday_pa: { start: "13:00", end: "14:00" },
-  pick2evening_pa: { start: "18:50", end: "20:00" },
-  pick3midday_pa: { start: "13:00", end: "14:00" },
-  pick3evening_pa: { start: "18:50", end: "20:00" },
-  pick4midday_pa: { start: "13:00", end: "14:00" },
-  pick4evening_pa: { start: "18:50", end: "20:00" },
-  pick5midday_pa: { start: "13:00", end: "14:00" },
-  pick5evening_pa: { start: "18:50", end: "20:00" },
-  treasurehunt_pa: { start: "12:30", end: "14:00" },
-  cash5_pa: { start: "18:30", end: "20:00" },
-  match6_pa: { start: "18:30", end: "20:00" },
-  cash4life_pa: { start: "20:45", end: "23:59" },
-  megamillions_pa: { start: "22:45", end: "23:59" },
-  powerball_pa: { start: "22:30", end: "23:59" },
-  powerball_db_pa: { start: "22:30", end: "23:59" },
-};
+  if (ampm === "PM" && h !== 12) h += 12;
+  if (ampm === "AM" && h === 12) h = 0;
+
+  return h * 60 + m;
+}
 
 /**
- * Função para verificar janela — mas se FORCE_ALL = true,
- * ela sempre retorna true.
+ * Gera a janela automaticamente:
+ * start = drawTimeET - 15 min
+ * end   = drawTimeET + 60 min
  */
-export function isWithinWindow(game_id: string): boolean {
+function generateWindow(drawTimeET: string) {
+  const draw = parseETToMinutes(drawTimeET);
+  const start = draw - 15;
+  const end = draw + 60;
+
+  return { start, end };
+}
+
+/**
+ * Verifica se estamos dentro da janela automática
+ */
+export function isWithinWindowAuto(game: any): boolean {
   if (FORCE_ALL) return true;
 
-  const window = DRAW_WINDOWS[game_id];
-  if (!window) return false;
-
   const now = new Date();
-  const [h, m] = now.toTimeString().slice(0, 5).split(":").map(Number);
+  const nowTotal = now.getHours() * 60 + now.getMinutes();
 
-  const nowTotal = h * 60 + m;
-  const [sh, sm] = window.start.split(":").map(Number);
-  const [eh, em] = window.end.split(":").map(Number);
+  const { start, end } = generateWindow(game.drawTimeET);
 
-  const startTotal = sh * 60 + sm;
-  const endTotal = eh * 60 + em;
+  // Lida com janelas que atravessam meia-noite
+  if (end >= 24 * 60) {
+    return nowTotal >= start || nowTotal <= end - 1440;
+  }
 
-  return nowTotal >= startTotal && nowTotal <= endTotal;
+  return nowTotal >= start && nowTotal <= end;
 }

@@ -1,5 +1,5 @@
 import { ALL_GAMES } from "../states";
-import { isWithinWindowAuto } from "./timeWindow";
+import { isWithinWindow } from "./timeWindow";
 import { scrapeGame } from "../utils/scrape";
 import { saveResult } from "../supabase/save";
 
@@ -7,16 +7,17 @@ export async function runScheduler() {
   console.log(`⏱ Scheduler executado às ${new Date().toLocaleTimeString()}`);
 
   for (const game of ALL_GAMES) {
-    if (!isWithinWindowAuto(game)) {
+    if (!isWithinWindow(game.game_id)) {
       console.log(`⏭ Fora da janela (${game.displayName})`);
       continue;
     }
 
-    console.log(`🔍 Scraping: ${game.displayName}`);
+    console.log(`🔍 Scrape: ${game.displayName} (${game.game_id})`);
 
     const scraped = await scrapeGame(game);
+
     if (!scraped) {
-      console.log(`⏳ Nenhuma mudança / scrape inválido`);
+      console.log(`⏳ Nenhuma mudança ou scrape inválido: ${game.game_id}`);
       continue;
     }
 

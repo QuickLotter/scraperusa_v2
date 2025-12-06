@@ -4,36 +4,6 @@ import { GameDefinition } from "../../types";
 
 export const OHIO_GAMES: GameDefinition[] = [
   // -----------------------
-  // MEGA MILLIONS
-  // -----------------------
-  {
-    game_id: "megamillions_oh",
-    state: "OH",
-    displayName: "Mega Millions",
-    url: "https://www.lotteryusa.com/ohio/mega-millions/",
-    mainNumbers: 5,
-    hasExtraBall: true,
-    supportsCashValue: true,
-    drawTimeET: "11:00 PM",
-    daysOfWeek: [2, 5], // Tue, Fri
-  },
-
-  // -----------------------
-  // POWERBALL
-  // -----------------------
-  {
-    game_id: "powerball_oh",
-    state: "OH",
-    displayName: "Powerball",
-    url: "https://www.lotteryusa.com/ohio/powerball/",
-    mainNumbers: 5,
-    hasExtraBall: true,
-    supportsCashValue: true,
-    drawTimeET: "10:59 PM",
-    daysOfWeek: [1, 3, 6], // Mon, Wed, Sat
-  },
-
-  // -----------------------
   // LUCKY FOR LIFE
   // -----------------------
   {

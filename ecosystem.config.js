@@ -1,8 +1,8 @@
 module.exports = {
   apps: [
     {
-      name: "scraperusa",
-      script: "dist/scheduler/scheduler.js", // <- caminho correto pós build
+      name: "scraperusa_v2",
+      script: "dist/scheduler/scheduler.js",
       cwd: "./",
       instances: 1,
       autorestart: true,
@@ -20,20 +20,15 @@ module.exports = {
       host: "64.71.161.251",
 
       ref: "origin/main",
-      repo: "git@github.com:QuickLotter/scraperusa.git",
+      repo: "git@github.com:QuickLotter/scraperusa_v2.git",
 
-      path: "/opt/scraperusa",
+      path: "/opt/scraperusa_v2",
 
-      // --------------------------------------
-      // Antes de enviar arquivos
-      // --------------------------------------
       "pre-deploy-local": "",
 
-      // --------------------------------------
-      // Após copiar código no VPS
-      // --------------------------------------
+      // 🔥 COMANDOS EXECUTADOS AUTOMATICAMENTE APÓS O PUSH
       "post-deploy":
-        "npm install && npm run build && pm2 reload ecosystem.config.js --only scraperusa",
+        "npm install && npm run build && pm2 reload ecosystem.config.js --only scraperusa_v2",
     },
   },
 };

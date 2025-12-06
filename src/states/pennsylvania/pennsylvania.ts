@@ -144,28 +144,4 @@ export const PENNSYLVANIA_GAMES: GameDefinition[] = [
     drawTimeET: "09:00 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
   },
-
-  {
-    game_id: "megamillions_pa",
-    state: "PA",
-    displayName: "Mega Millions",
-    url: "https://www.lotteryusa.com/pennsylvania/mega-millions/",
-    mainNumbers: 5,
-    hasExtraBall: true,
-    supportsCashValue: true,
-    drawTimeET: "11:00 PM",
-    daysOfWeek: [2, 5],
-  },
-
-  {
-    game_id: "powerball_pa",
-    state: "PA",
-    displayName: "Powerball",
-    url: "https://www.lotteryusa.com/pennsylvania/powerball/",
-    mainNumbers: 5,
-    hasExtraBall: true,
-    supportsCashValue: true,
-    drawTimeET: "10:59 PM",
-    daysOfWeek: [1, 3, 6],
-  },
 ];

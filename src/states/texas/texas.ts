@@ -4,36 +4,6 @@ import { GameDefinition } from "../../types";
 
 export const TEXAS_GAMES: GameDefinition[] = [
   // -----------------------
-  // MEGA MILLIONS
-  // -----------------------
-  {
-    game_id: "megamillions_tx",
-    state: "TX",
-    displayName: "Mega Millions",
-    url: "https://www.lotteryusa.com/texas/mega-millions/",
-    mainNumbers: 5,
-    hasExtraBall: true,
-    supportsCashValue: true,
-    drawTimeET: "11:00 PM",
-    daysOfWeek: [2, 5],
-  },
-
-  // -----------------------
-  // POWERBALL
-  // -----------------------
-  {
-    game_id: "powerball_tx",
-    state: "TX",
-    displayName: "Powerball",
-    url: "https://www.lotteryusa.com/texas/powerball/",
-    mainNumbers: 5,
-    hasExtraBall: true,
-    supportsCashValue: true,
-    drawTimeET: "10:59 PM",
-    daysOfWeek: [1, 3, 6], // Mon, Wed, Sat
-  },
-
-  // -----------------------
   // LOTTO TEXAS
   // -----------------------
   {
