@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "scraperusa_v2",
       script: "dist/scheduler/scheduler.js",
-      cwd: "./",
+      cwd: "/opt/scraperusa_v2",
       instances: 1,
       autorestart: true,
       watch: false,
@@ -18,15 +18,9 @@ module.exports = {
     production: {
       user: "client_269_1",
       host: "64.71.161.251",
-
       ref: "origin/main",
       repo: "git@github.com:QuickLotter/scraperusa_v2.git",
-
       path: "/opt/scraperusa_v2",
-
-      "pre-deploy-local": "",
-
-      // 🔥 COMANDOS EXECUTADOS AUTOMATICAMENTE APÓS O PUSH
       "post-deploy":
         "npm install && npm run build && pm2 reload ecosystem.config.js --only scraperusa_v2",
     },
