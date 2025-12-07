@@ -16,8 +16,8 @@ module.exports = {
       watch: false,
       max_memory_restart: "500M",
 
-      // CRON — executa o ciclo a cada 2 minutos
-      cron_restart: "*/2 * * * *",
+      // CRON — executa o ciclo a cada 3 minutos
+      cron_restart: "*/3 * * * *",
 
       // ROTATE LOGS
       max_size: "10M",

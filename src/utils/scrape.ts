@@ -6,6 +6,16 @@ function clean(t: string | null | undefined): string | null {
   return t.replace(/\s+/g, " ").trim();
 }
 
+function findMoneyAll(text: string | null): string[] {
+  if (!text) return [];
+  return text.match(/\$\s*\d[\d,\.]*\s*(Million|Billion|Thousand)?/gi) || [];
+}
+
+function findMoney(text: string | null): string | null {
+  const list = findMoneyAll(text);
+  return list.length > 0 ? list[0] : null;
+}
+
 export async function scrapeGame(
   game: GameDefinition
 ): Promise<ScrapedResult | false> {
@@ -30,9 +40,9 @@ export async function scrapeGame(
   const card = document.querySelector(".c-draw-card");
   if (!card) return false;
 
-  // -------------------------------
-  // DRAW DATE
-  // -------------------------------
+  // --------------------------------------------------
+  // DATE
+  // --------------------------------------------------
   const rawDate =
     card.querySelector(".c-draw-card__draw-date")?.textContent ?? "";
 
@@ -42,9 +52,9 @@ export async function scrapeGame(
   const drawDate = new Date(match[1]);
   const draw_date = drawDate.toISOString().split("T")[0];
 
-  // -------------------------------
+  // --------------------------------------------------
   // NUMBERS
-  // -------------------------------
+  // --------------------------------------------------
   const balls = [...card.querySelectorAll(".c-ball")].map((el) =>
     Number(el.textContent.trim())
   );
@@ -54,17 +64,17 @@ export async function scrapeGame(
     ? balls[game.mainNumbers] ?? null
     : null;
 
-  // ================================
-  // UNIVERSAL PRIZE EXTRACTION
-  // ================================
+  // ===================================================================
+  // JACKPOT UNIVERSAL: atual e próximo
+  // ===================================================================
   let est_jackpot: string | null = null;
   let next_est_jackpot: string | null = null;
   let cash_value: string | null = null;
   let next_cash_value: string | null = null;
 
-  // -------------------------------------------------------
-  // 1) JACKPOT / TOP PRIZE (CARD PRINCIPAL)
-  // -------------------------------------------------------
+  // -------------------------------
+  // PRIZE LABEL & VALUE (Atual)
+  // -------------------------------
   const prizeLabel = clean(
     card.querySelector(".c-draw-card__metric-label")?.textContent
   );
@@ -75,58 +85,70 @@ export async function scrapeGame(
   if (prizeLabel && prizeValue) {
     const lower = prizeLabel.toLowerCase();
 
-    if (lower.includes("jackpot") || lower.includes("top prize")) {
+    if (lower.includes("top prize") || lower.includes("jackpot")) {
       est_jackpot = prizeValue;
-      next_est_jackpot = prizeValue;
+      next_est_jackpot = prizeValue; // regra confirmada
     }
   }
 
-  // -------------------------------------------------------
-  // 2) SIDEBAR (Next Jackpot, Cash Value, etc)
-  // -------------------------------------------------------
-  const infoBoxes = [...document.querySelectorAll(".c-state-short-info__box")];
+  // ===========================================================
+  // INFO BOXES (Next jackpot / Next cash value / Cash value)
+  // ===========================================================
+  const boxes = [...document.querySelectorAll(".c-state-short-info__box")];
 
-  for (const box of infoBoxes) {
+  for (const box of boxes) {
     const title = clean(
       box.querySelector(".c-state-short-info__title")?.textContent
     );
-    const value = clean(
+    const subtitle = clean(
       box.querySelector(".c-state-short-info__subtitle")?.textContent
     );
 
-    if (!title || !value) continue;
+    if (!title || !subtitle) continue;
 
     const ttl = title.toLowerCase();
 
-    // ------------------------------
-    // NEXT EST. JACKPOT
-    // ------------------------------
+    // --------------------------
+    // NEXT JACKPOT (pode conter cash value junto)
+    // --------------------------
     if (
       ttl.includes("next") &&
-      (ttl.includes("jackpot") || ttl.includes("est. jackpot"))
+      (ttl.includes("jackpot") ||
+        ttl.includes("est. jackpot") ||
+        ttl.includes("top prize"))
     ) {
-      next_est_jackpot = value; // ex: "$12.4 Million"
+      const moneyList = findMoneyAll(subtitle);
+
+      if (moneyList.length >= 1) {
+        next_est_jackpot = moneyList[0]; // jackpot correto
+      }
+
+      if (moneyList.length >= 2) {
+        next_cash_value = moneyList[1]; // cash value embutido
+      }
+
+      continue;
     }
 
-    // ------------------------------
-    // CASH VALUE (Atual)
-    // ------------------------------
+    // --------------------------
+    // CASH VALUE ATUAL
+    // --------------------------
     if (ttl.includes("cash value") && !ttl.includes("next")) {
-      cash_value = value; // ex: "$820 Million"
+      cash_value = findMoney(subtitle);
+      continue;
     }
 
-    // ------------------------------
-    // NEXT CASH VALUE
-    // ------------------------------
+    // --------------------------
+    // NEXT CASH VALUE (se vier separado)
+    // --------------------------
     if (ttl.includes("cash value") && ttl.includes("next")) {
-      next_cash_value = value; // ex: "$7.2 Million"
+      next_cash_value = findMoney(subtitle);
+      continue;
     }
   }
 
-  // ============================================================
   // RESULTADO FINAL
-  // ============================================================
-  return {
+  const result: ScrapedResult = {
     game_id: game.game_id,
     draw_date,
     numbers,
@@ -136,4 +158,6 @@ export async function scrapeGame(
     next_est_jackpot,
     next_cash_value,
   };
+
+  return result;
 }
