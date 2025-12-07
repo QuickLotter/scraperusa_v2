@@ -4,8 +4,8 @@ module.exports = {
       name: "scraperusa_v2",
 
       // Arquivo compilado pelo TypeScript
-      script: "dist/scheduler/scheduler.js",
-      cwd: "./",
+      script: "dist/main.js", // <-- ENTRYPOINT CORRETO
+      cwd: "/opt/scraperusa_v2",
 
       // 1 processo é suficiente para scrapers
       instances: 1,
@@ -32,7 +32,7 @@ module.exports = {
 
         // ------ SUPABASE ------
         SUPABASE_URL: process.env.SUPABASE_URL,
-        SUPABASE_SERVICE_ROLE: process.env.SUPABASE_SERVICE_ROLE,
+        SUPABASE_SERVICE_ROLE: process.env.SUPABASE_SERVICE_ROLE_KEY,
 
         // ------ DEBUG ------
         DEBUG_SCHEDULER: "false", // "true" para ativar logs extras
