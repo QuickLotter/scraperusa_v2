@@ -3,14 +3,17 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE) {
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
   console.error("❌ ERRO: Variáveis do Supabase ausentes no .env");
   console.error("SUPABASE_URL:", process.env.SUPABASE_URL);
-  console.error("SUPABASE_SERVICE_ROLE:", process.env.SUPABASE_SERVICE_ROLE);
+  console.error(
+    "SUPABASE_SERVICE_ROLE:",
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
   throw new Error("Env inválido");
 }
 
 export const ENV = {
   SUPABASE_URL: process.env.SUPABASE_URL!,
-  SUPABASE_SERVICE_ROLE: process.env.SUPABASE_SERVICE_ROLE!,
+  SUPABASE_SERVICE_ROLE: process.env.SUPABASE_SERVICE_ROLE_KEY!,
 };
