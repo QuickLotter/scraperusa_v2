@@ -1,23 +1,19 @@
+require("dotenv").config({ path: "/opt/scraperusa_v2/shared/.env" });
+
 module.exports = {
   apps: [
     {
       name: "scraperusa_v2",
-      script: "dist/main.js", // <-- CORREÇÃO IMPORTANTE
+      script: "dist/main.js", // <<=== AQUI ESTAVA O ERRO !!
       cwd: "./",
       instances: 1,
       autorestart: true,
       watch: false,
       max_memory_restart: "500M",
-
       env: {
         NODE_ENV: "production",
-      },
-
-      env_production: {
-        NODE_ENV: "production",
-        ...require("dotenv").config({
-          path: "/opt/scraperusa_v2/shared/.env",
-        }).parsed,
+        SUPABASE_URL: process.env.SUPABASE_URL,
+        SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
       },
     },
   ],
@@ -35,7 +31,7 @@ module.exports = {
       "pre-deploy-local": "",
 
       "post-deploy":
-        "npm install && npm run build && pm2 reload ecosystem.config.js --only scraperusa_v2",
+        "npm install && npm run build && pm2 startOrReload ecosystem.config.js --only scraperusa_v2",
     },
   },
 };
