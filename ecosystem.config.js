@@ -24,9 +24,9 @@ module.exports = {
       merge_logs: true,
       time: true,
 
-      /////////////////////////////////
+      ////////////////////////////////
       // VARIÁVEIS DE AMBIENTE
-      /////////////////////////////////
+      ////////////////////////////////
       env: {
         NODE_ENV: "production",
 
