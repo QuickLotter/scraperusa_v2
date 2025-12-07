@@ -4,7 +4,7 @@ module.exports = {
   apps: [
     {
       name: "scraperusa_v2",
-      script: "dist/main.js", // <<=== AQUI ESTAVA O ERRO !!
+      script: "dist/main.js",
       cwd: "./",
       instances: 1,
       autorestart: true,
