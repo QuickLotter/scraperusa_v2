@@ -7,55 +7,56 @@ module.exports = {
       script: "dist/scheduler/scheduler.js",
       cwd: "./",
 
-      // 1 processo é suficiente para scrapers
       instances: 1,
       exec_mode: "fork",
 
-      // Reinicia automaticamente se travar
       autorestart: true,
       watch: false,
       max_memory_restart: "500M",
 
-      // CRON — executa o ciclo a cada 3 minutos
+      ///////////////////////////////////////////////////////
+      // CRON — Executa automaticamente a cada 3 minutos
+      ///////////////////////////////////////////////////////
       cron_restart: "*/3 * * * *",
 
-      // ROTATE LOGS
+      ///////////////////////////////////////////////////////
+      // LOG ROTATION PROFISSIONAL
+      ///////////////////////////////////////////////////////
       max_size: "10M",
       merge_logs: true,
       time: true,
 
-      /////////////////////////////////
-      // VARIÁVEIS DE AMBIENTE
-      /////////////////////////////////
+      ///////////////////////////////////////////////////////
+      // AMBIENTE
+      ///////////////////////////////////////////////////////
       env: {
         NODE_ENV: "production",
 
-        // ------ SUPABASE ------
+        // Supabase
         SUPABASE_URL: process.env.SUPABASE_URL,
         SUPABASE_SERVICE_ROLE: process.env.SUPABASE_SERVICE_ROLE,
 
-        // ------ DEBUG ------
-        DEBUG_SCHEDULER: "false", // "true" para ativar logs extras
+        // Debug (mude para "true" quando quiser ver logs extras)
+        DEBUG_SCHEDULER: "false",
       },
     },
   ],
 
-  ////////////////////////////////////////////////////
-  // PM2 DEPLOY CONFIG — para deploy pelo VSCode/PM2
-  ////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////
+  // PM2 DEPLOY CONFIG — usado pelo VSCode ou terminal
+  ///////////////////////////////////////////////////////
   deploy: {
     production: {
       user: "client_269_1",
       host: "64.71.161.251",
 
-      // usando senha, não chave SSH
+      // sem chave privada, usando senha
       ref: "origin/main",
       repo: "git@github.com:QuickLotter/scraperusa_v2.git",
 
-      // Diretório de releases do PM2
       path: "/opt/scraperusa_v2",
 
-      // Comandos executados após o GIT pull
+      // Executado após baixar nova versão
       "post-deploy":
         "npm install && npm run build && pm2 reload ecosystem.config.js --only scraperusa_v2",
     },
