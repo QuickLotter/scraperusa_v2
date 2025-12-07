@@ -1,3 +1,4 @@
+//src/main.ts
 import { runScheduler } from "./scheduler/scheduler";
 
 console.log("🚀 ScraperUSA iniciado\n===============================");
