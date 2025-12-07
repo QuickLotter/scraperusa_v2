@@ -1,20 +1,25 @@
+// src/supabase/supabaseClient.ts
+
+import * as dotenv from "dotenv";
+dotenv.config(); // 👈 garante carregamento local (ts-node)
+
+// Supabase
 import { createClient } from "@supabase/supabase-js";
-import fetch from "node-fetch";
 
-const http = require("http");
+// ENV
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE;
 
-const agent = new http.Agent({
-  keepAlive: false,
+if (!SUPABASE_URL) {
+  throw new Error("❌ Missing SUPABASE_URL in environment variables.");
+}
+
+if (!SUPABASE_SERVICE_ROLE) {
+  throw new Error("❌ Missing SUPABASE_SERVICE_ROLE in environment variables.");
+}
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE, {
+  auth: { persistSession: false },
 });
 
-globalThis.fetch = (url: any, opts: any = {}) => {
-  return fetch(url, { agent, ...opts });
-};
-
-export const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: { persistSession: false },
-  }
-);
+export default supabase;
