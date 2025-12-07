@@ -1,34 +1,52 @@
-//src/scheduler/scheduler.ts
 import { ALL_GAMES } from "../states";
 import { isWithinWindowAuto } from "./timeWindow";
 import { scrapeGame } from "../utils/scrape";
 import { saveResult } from "../supabase/save";
+import { DateTime } from "luxon";
 
 export async function runScheduler() {
-  console.log(`⏱ Scheduler executado às ${new Date().toLocaleTimeString()}`);
+  const nowET = DateTime.now().setZone("America/New_York");
+  console.log(`\n⏱ Scheduler executado — ET ${nowET.toFormat("HH:mm:ss")}`);
+
+  let totalChecked = 0;
+  let totalUpdated = 0;
 
   for (const game of ALL_GAMES) {
-    if (!isWithinWindowAuto(game)) {
-      console.log(`⏭ Fora da janela (${game.displayName})`);
-      continue;
+    totalChecked++;
+
+    const inside = isWithinWindowAuto(game);
+
+    if (!inside) {
+      console.log(
+        `⚠️ Fora da janela — verificando mesmo assim (${game.displayName})`
+      );
+    } else {
+      console.log(`🟩 Dentro da janela (${game.displayName})`);
     }
 
     console.log(`🔍 Scraping: ${game.displayName}`);
 
     const scraped = await scrapeGame(game);
+
     if (!scraped) {
-      console.log(`⏳ Nenhuma mudança / scrape inválido`);
+      console.log(`⏳ Scrape inválido ou sem dados retornados`);
       continue;
     }
 
     const updated = await saveResult(scraped);
 
     if (updated) {
-      console.log(`✅ Atualizado: ${game.game_id}`);
+      totalUpdated++;
+      console.log(`✅ Novo resultado salvo: ${game.game_id}`);
     } else {
-      console.log(`⏹ Nenhuma atualização — já é o mesmo draw_date`);
+      console.log(`⏹ Nenhuma atualização — draw_date igual`);
     }
   }
 
-  console.log("🏁 Ciclo concluído.");
+  console.log("\n===============================");
+  console.log(`📊 RESUMO DO CICLO`);
+  console.log(`🔎 Jogos verificados: ${totalChecked}`);
+  console.log(`💾 Jogos atualizados: ${totalUpdated}`);
+  console.log(`⏰ Horário ET: ${nowET.toFormat("HH:mm:ss")}`);
+  console.log("===============================\n");
 }
