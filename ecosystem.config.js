@@ -2,14 +2,22 @@ module.exports = {
   apps: [
     {
       name: "scraperusa_v2",
-      script: "dist/scheduler/scheduler.js",
+      script: "dist/main.js", // <-- CORREÇÃO IMPORTANTE
       cwd: "./",
       instances: 1,
       autorestart: true,
       watch: false,
       max_memory_restart: "500M",
+
       env: {
         NODE_ENV: "production",
+      },
+
+      env_production: {
+        NODE_ENV: "production",
+        ...require("dotenv").config({
+          path: "/opt/scraperusa_v2/shared/.env",
+        }).parsed,
       },
     },
   ],
@@ -19,9 +27,6 @@ module.exports = {
       user: "client_269_1",
       host: "64.71.161.251",
 
-      // REMOVIDO O KEY — USARÁ SENHA
-      // key: "/home/client_269_1/.ssh/id_ed25519",
-
       ref: "origin/main",
       repo: "git@github.com:QuickLotter/scraperusa_v2.git",
 
@@ -29,7 +34,6 @@ module.exports = {
 
       "pre-deploy-local": "",
 
-      // Comando final no servidor
       "post-deploy":
         "npm install && npm run build && pm2 reload ecosystem.config.js --only scraperusa_v2",
     },

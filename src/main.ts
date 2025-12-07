@@ -1,4 +1,6 @@
 //src/main.ts
+import "dotenv/config";
+
 import { runScheduler } from "./scheduler/scheduler";
 
 console.log("🚀 ScraperUSA iniciado\n===============================");
