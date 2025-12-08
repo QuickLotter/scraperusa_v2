@@ -154,3 +154,7 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+
+#ecosystem file
+ecosystem.config,js
