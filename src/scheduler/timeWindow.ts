@@ -1,10 +1,5 @@
-// src/scheduler/timeWindow.ts
+export const FORCE_ALL = false; // deixe true apenas para testes rápidos
 
-export const FORCE_ALL = false; // ← deixe true apenas para testes
-
-/**
- * Converte "09:00 PM" → minutos totais (ex: 1260)
- */
 function parseETToMinutes(timeET: string): number {
   const [hm, ampm] = timeET.split(" ");
   let [h, m] = hm.split(":").map(Number);
@@ -15,22 +10,15 @@ function parseETToMinutes(timeET: string): number {
   return h * 60 + m;
 }
 
-/**
- * Gera a janela automaticamente:
- * start = drawTimeET - 15 min
- * end   = drawTimeET + 60 min
- */
+// Janela de scraping: 15 min antes e até 60 min depois do sorteio
 function generateWindow(drawTimeET: string) {
   const draw = parseETToMinutes(drawTimeET);
-  const start = draw - 15;
-  const end = draw + 60;
-
-  return { start, end };
+  return {
+    start: draw - 15,
+    end: draw + 60,
+  };
 }
 
-/**
- * Verifica se estamos dentro da janela automática
- */
 export function isWithinWindowAuto(game: any): boolean {
   if (FORCE_ALL) return true;
 
@@ -39,8 +27,8 @@ export function isWithinWindowAuto(game: any): boolean {
 
   const { start, end } = generateWindow(game.drawTimeET);
 
-  // Lida com janelas que atravessam meia-noite
-  if (end >= 24 * 60) {
+  // Janelas que passam meia-noite
+  if (end >= 1440) {
     return nowTotal >= start || nowTotal <= end - 1440;
   }
 

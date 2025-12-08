@@ -17,19 +17,16 @@ export async function runScheduler() {
     const inside = isWithinWindowAuto(game);
 
     if (!inside) {
-      console.log(
-        `⚠️ Fora da janela — verificando mesmo assim (${game.displayName})`
-      );
-    } else {
-      console.log(`🟩 Dentro da janela (${game.displayName})`);
+      console.log(`⏸ Fora da janela — ignorando ${game.displayName}`);
+      continue; // <<<<<< AQUI — NÃO FAZ REQUEST FORA DA JANELA
     }
 
-    console.log(`🔍 Scraping: ${game.displayName}`);
+    console.log(`🟢 Dentro da janela — scraping ${game.displayName}`);
 
     const scraped = await scrapeGame(game);
 
     if (!scraped) {
-      console.log(`⏳ Scrape inválido ou sem dados retornados`);
+      console.log(`⚠️ Scrape inválido ${game.displayName}`);
       continue;
     }
 
@@ -39,14 +36,13 @@ export async function runScheduler() {
       totalUpdated++;
       console.log(`✅ Novo resultado salvo: ${game.game_id}`);
     } else {
-      console.log(`⏹ Nenhuma atualização — draw_date igual`);
+      console.log(`⏹ Nenhuma atualização para ${game.game_id}`);
     }
   }
 
-  console.log("\n===============================");
-  console.log(`📊 RESUMO DO CICLO`);
+  console.log(`\n📊 RESUMO`);
   console.log(`🔎 Jogos verificados: ${totalChecked}`);
-  console.log(`💾 Jogos atualizados: ${totalUpdated}`);
+  console.log(`💾 Resultados atualizados: ${totalUpdated}`);
   console.log(`⏰ Horário ET: ${nowET.toFormat("HH:mm:ss")}`);
-  console.log("===============================\n");
+  console.log(`===============================\n`);
 }
