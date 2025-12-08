@@ -53,4 +53,7 @@ export async function runScheduler() {
   console.log(`💾 Resultados atualizados: ${totalUpdated}`);
   console.log(`⏰ Horário ET: ${nowET.toFormat("HH:mm:ss")}`);
   console.log("===============================\n");
+
+  // ⛔ FINALIZA O PROCESSO APÓS EXECUTAR UMA RODADA
+  process.exit(0);
 }
