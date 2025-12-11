@@ -5,14 +5,13 @@ function clean(t: string | null | undefined): string | null {
   return t.replace(/\s+/g, " ").trim();
 }
 
-export function extractJackpotInfo(html: string) {
+export function extractJackpotInfo(html: string, game_id: string) {
   const dom = new JSDOM(html);
   const document = dom.window.document;
 
   let est_jackpot: string | null = null;
   let next_est_jackpot: string | null = null;
   let cash_value: string | null = null;
-  let next_cash_value: string | null = null;
 
   // Jackpot atual
   const jackpotNodes = [
@@ -25,22 +24,13 @@ export function extractJackpotInfo(html: string) {
 
     if (!label || !strong) continue;
 
-    if (label.includes("Top prize")) {
-      est_jackpot = strong;
-      next_est_jackpot = strong;
-    }
-
-    if (
-      label.includes("Est. jackpot") ||
-      (label.includes("Jackpot") && !label.includes("Next"))
-    ) {
+    if (label.includes("Top prize") || label.includes("Jackpot")) {
       est_jackpot = strong;
     }
   }
 
   // Cash value atual
   const cashNode = document.querySelector(".c-state-short-info_subtitle");
-
   if (cashNode) {
     const txt = clean(cashNode.textContent);
     if (txt?.includes("Cash value:")) {
@@ -61,31 +51,35 @@ export function extractJackpotInfo(html: string) {
 
     if (!title || !value) continue;
 
-    // CORREÇÃO: só pega blocos de jackpot VERDADEIROS
     if (
       title.includes("Next") &&
       (title.toLowerCase().includes("jackpot") ||
-        title.toLowerCase().includes("est. jackpot"))
+        title.toLowerCase().includes("top prize"))
     ) {
       const match = value.match(/\$\s*\d[\d,\.]*/);
       if (match) {
         next_est_jackpot = match[0];
       }
     }
+  }
 
-    // Próximo cash value
-    if (title.toLowerCase().includes("cash value")) {
-      const matchCash = value.match(/\$\s*\d[\d,\.]*/);
-      if (matchCash) {
-        next_cash_value = matchCash[0];
-      }
-    }
+  // 🔥 REGRAS ESPECIAIS
+  if (
+    [
+      "cash4life_ny",
+      "cash4life_fl",
+      "luckyforlife_oh",
+      "luckyforlife_id",
+    ].includes(game_id)
+  ) {
+    est_jackpot = "$1,000 Per day for life";
+    next_est_jackpot = "$1,000";
+    cash_value = null;
   }
 
   return {
     est_jackpot,
     cash_value,
     next_est_jackpot,
-    next_cash_value,
   };
 }

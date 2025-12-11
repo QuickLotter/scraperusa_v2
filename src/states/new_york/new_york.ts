@@ -21,8 +21,8 @@ export const NEW_YORK_GAMES: GameDefinition[] = [
     mainNumbers: 5,
     hasExtraBall: true,
     supportsCashValue: true,
-    drawTimeET: "10:59 PM",
-    daysOfWeek: [1, 3, 6],
+    drawTimeET: "11:00 PM",
+    daysOfWeek: [1, 4, 6],
   },
 
   {

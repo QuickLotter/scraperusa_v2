@@ -1,9 +1,10 @@
 {
-  "name": "scraperusa",
+  "name": "scraperusa_v2",
   "version": "1.0.0",
   "main": "dist/scheduler/scheduler.js",
   "scripts": {
     "dev": "npx ts-node src/scheduler/scheduler.ts",
+    "force": "npx ts-node src/forceRun.ts",
     "test": "npx ts-node src/testScraper.ts",
     "build": "tsc",
     "start": "node dist/scheduler/scheduler.js"

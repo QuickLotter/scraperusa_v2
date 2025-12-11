@@ -15,20 +15,21 @@ export async function runScheduler() {
   for (const game of ALL_GAMES) {
     totalChecked++;
 
+    const fullName = `${game.displayName} (${game.state})`;
+
     const inside = isWithinWindowAuto(game);
 
     if (!inside) {
-      console.log(`⛔ Fora da janela (${game.displayName}) — ignorado`);
-      continue; // ⚠️ <-- AGORA NÃO SCRAPEIA MAIS
+      console.log(`⛔ Fora da janela — ${fullName} ignorado`);
+      continue;
     }
 
-    console.log(`🟢 Dentro da janela — Scraping: ${game.displayName}`);
-    totalScraped++;
+    console.log(`🟢 Dentro da janela — Scraping: ${fullName}`);
 
     const scraped = await scrapeGame(game);
 
     if (!scraped) {
-      console.log(`⚠️ Scrape inválido ou sem dados retornados`);
+      console.log(`⚠️ Scrape inválido para ${fullName}`);
       continue;
     }
 
@@ -36,9 +37,9 @@ export async function runScheduler() {
 
     if (updated) {
       totalUpdated++;
-      console.log(`✅ Novo resultado salvo: ${game.game_id}`);
+      console.log(`✅ Resultado salvo para: ${fullName}`);
     } else {
-      console.log(`⏹ Nenhuma atualização — draw_date igual`);
+      console.log(`⏹ Nada novo — draw_date igual (${fullName})`);
     }
   }
 
@@ -49,4 +50,9 @@ export async function runScheduler() {
   console.log(`💾 Resultados atualizados: ${totalUpdated}`);
   console.log(`⏰ Horário ET: ${nowET.toFormat("HH:mm:ss")}`);
   console.log("===============================\n");
+}
+
+// 🔥 PERMITE EXECUTAR LOCALMENTE
+if (require.main === module) {
+  runScheduler();
 }

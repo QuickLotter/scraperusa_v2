@@ -20,5 +20,4 @@ export interface ScrapedResult {
   est_jackpot: string | null;
   cash_value: string | null;
   next_est_jackpot: string | null;
-  next_cash_value: string | null;
 }
