@@ -2,7 +2,9 @@
 import { parseHTML } from "linkedom";
 import { GameDefinition, ScrapedResult } from "../types";
 
-// ================ HELPERS =====================================
+// ===========================================================
+// HELPERS
+// ===========================================================
 
 function clean(t: string | null | undefined): string | null {
   if (!t) return null;
@@ -19,13 +21,16 @@ function findMoney(text: string | null): string | null {
   return list.length > 0 ? list[0] : null;
 }
 
-// ================ MAIN SCRAPER =====================================
+// ===========================================================
+// MAIN SCRAPER
+// ===========================================================
 
 export async function scrapeGame(
   game: GameDefinition
 ): Promise<ScrapedResult | false> {
   console.log(`🔍 Scraping: ${game.displayName}`);
 
+  // ---------------- HTTP REQUEST ----------------
   let resp: Response;
   try {
     resp = await fetch(game.url, {
@@ -42,14 +47,18 @@ export async function scrapeGame(
   const html = await resp.text();
   const { document } = parseHTML(html);
 
-  // =================== CARD PRINCIPAL ================================
+  // ===========================================================
+  // CARD PRINCIPAL
+  // ===========================================================
   const card = document.querySelector(".c-draw-card");
   if (!card) {
-    console.log("⚠️ Nenhum card .c-draw-card encontrado");
+    console.log("⚠️ Nenhum .c-draw-card encontrado");
     return false;
   }
 
-  // =================== DATA DO SORTEIO ================================
+  // ===========================================================
+  // DATA
+  // ===========================================================
   const rawDate =
     card.querySelector(".c-draw-card__draw-date")?.textContent ?? "";
 
@@ -59,7 +68,9 @@ export async function scrapeGame(
   const drawDate = new Date(match[1]);
   const draw_date = drawDate.toISOString().split("T")[0];
 
-  // =================== NÚMEROS ================================
+  // ===========================================================
+  // NÚMEROS
+  // ===========================================================
   const balls = [...card.querySelectorAll(".c-ball")].map((el) =>
     Number(el.textContent.trim())
   );
@@ -69,12 +80,13 @@ export async function scrapeGame(
     ? balls[game.mainNumbers] ?? null
     : null;
 
-  // ================= JACKPOTS ================================
+  // ===========================================================
+  // JACKPOT
+  // ===========================================================
   let est_jackpot: string | null = null;
   let next_est_jackpot: string | null = null;
   let cash_value: string | null = null;
 
-  // Jackpot atual no topo do card
   const prizeLabel = clean(
     card.querySelector(".c-draw-card__metric-label")?.textContent
   );
@@ -82,63 +94,82 @@ export async function scrapeGame(
     card.querySelector(".c-draw-card__prize-value")?.textContent
   );
 
-  if (prizeLabel && prizeValue) {
-    const lower = prizeLabel.toLowerCase();
-    if (lower.includes("jackpot") || lower.includes("top prize")) {
-      est_jackpot = prizeValue;
-      next_est_jackpot = prizeValue; // fallback
-    }
-  }
+  const isTopPrize = prizeLabel?.toLowerCase().includes("top prize") ?? false;
 
-  // ================= CASH VALUE — CORREÇÃO DO SELETOR ====================
-  const cashSub = document.querySelector(".c-state-short-info__subtitle--sub");
+  const looksFixedJackpot =
+    prizeValue &&
+    !prizeValue.toLowerCase().includes("million") &&
+    !prizeValue.toLowerCase().includes("billion");
 
-  if (cashSub) {
-    const txt = clean(cashSub.textContent);
-    if (txt?.toLowerCase().includes("cash value")) {
-      const money = findMoney(txt);
-      if (money) cash_value = money;
-    }
-  }
+  // ===========================================================
+  // 🎯 REGRAS AUTOMÁTICAS PARA DEFINIR JACKPOT FIXO
+  // ===========================================================
+  // Exemplos:
+  // "$500", "$5,000", "$18,923", "$50,000"
+  //
+  // ✔ Jogos Pick / Numbers / Win4 / Cash5 / Fantasy5 (alguns estados)
+  // ✔ Jackpot que NÃO aparece em caixa "Next Jackpot"
+  // ✔ Top prize nunca tem next jackpot
+  // ===========================================================
 
-  // ================= INFO BOXES ====================
   const boxes = [...document.querySelectorAll(".c-state-short-info__box")];
 
-  for (const box of boxes) {
-    const title = clean(
+  const hasNextJackpotBox = boxes.some((box) => {
+    const t = clean(
       box.querySelector(".c-state-short-info__title")?.textContent
+    )?.toLowerCase();
+    return t?.includes("next") && t.includes("jackpot");
+  });
+
+  const isFixed = isTopPrize || looksFixedJackpot || !hasNextJackpotBox; // sem next jackpot → jackpot fixo
+
+  if (isFixed) {
+    est_jackpot = prizeValue;
+    next_est_jackpot = null;
+    cash_value = null;
+  } else {
+    // ===========================================================
+    // 🎯 JOGOS PROGRESSIVOS (Mega, Powerball, Lotto, etc.)
+    // ===========================================================
+
+    est_jackpot = prizeValue;
+
+    // ---------- CASH VALUE ----------
+    const cashNode = document.querySelector(
+      ".c-state-short-info__subtitle--sub"
     );
-    const subtitle = clean(
-      box.querySelector(".c-state-short-info__subtitle")?.textContent
-    );
-
-    if (!title || !subtitle) continue;
-
-    const ttl = title.toLowerCase();
-
-    // ▸ Próximo Jackpot
-    if (
-      ttl.includes("next") &&
-      (ttl.includes("jackpot") ||
-        ttl.includes("top prize") ||
-        ttl.includes("est. jackpot"))
-    ) {
-      const money = findMoney(subtitle);
-      if (money) next_est_jackpot = money;
-      continue;
+    if (cashNode) {
+      const txt = clean(cashNode.textContent);
+      if (txt?.toLowerCase().includes("cash value")) {
+        cash_value = findMoney(txt);
+      }
     }
 
-    // (SE aparecer um "Next Cash Value" separado)
-    if (ttl.includes("cash value") && ttl.includes("next")) {
-      const money = findMoney(subtitle);
-      if (money) cash_value = money;
-      continue;
+    // ---------- NEXT JACKPOT ----------
+    for (const box of boxes) {
+      const title = clean(
+        box.querySelector(".c-state-short-info__title")?.textContent
+      )?.toLowerCase();
+      const subtitle = clean(
+        box.querySelector(".c-state-short-info__subtitle")?.textContent
+      );
+
+      if (!title || !subtitle) continue;
+
+      if (
+        title.includes("next") &&
+        (title.includes("jackpot") ||
+          title.includes("top prize") ||
+          title.includes("est. jackpot"))
+      ) {
+        next_est_jackpot = findMoney(subtitle);
+      }
     }
   }
 
-  // ==========================================================
-  // REGRAS ESPECIAIS PARA CASH4LIFE / LUCKY FOR LIFE
-  // ==========================================================
+  // ===========================================================
+  // REGRAS ESPECIAIS — CASH4LIFE / LUCKY FOR LIFE
+  // ===========================================================
   if (
     [
       "cash4life_ny",
@@ -149,10 +180,12 @@ export async function scrapeGame(
   ) {
     est_jackpot = "$1,000 Per day for life";
     next_est_jackpot = "$1,000";
-    cash_value = null; // esses jogos não têm cash value
+    cash_value = null;
   }
 
-  // ================= RESULTADO FINAL ==========================
+  // ===========================================================
+  // FINAL
+  // ===========================================================
   return {
     game_id: game.game_id,
     draw_date,
