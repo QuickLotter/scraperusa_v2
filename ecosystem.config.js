@@ -2,18 +2,12 @@ module.exports = {
   apps: [
     {
       name: "scraperusa_v2",
-
+      cwd: "/opt/scraperusa_v2/source",
       script: "dist/main.js",
-      cwd: "/opt/scraperusa_v2",
 
-      // EVITA LOOP INFINITO
       autorestart: false,
       watch: false,
-
-      // Executa somenta via CRON
-      cron_restart: "*/5 * * * *",
-
-      // Não tenta reiniciar sozinho
+      cron_restart: "*/3 * * * *",
       exp_backoff_restart_delay: 0,
 
       env: {
