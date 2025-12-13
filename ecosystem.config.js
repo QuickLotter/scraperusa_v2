@@ -2,19 +2,20 @@ module.exports = {
   apps: [
     {
       name: "scraperusa_v2",
-      cwd: "/opt/scraperusa_v2/source",
-      script: "dist/main.js",
+      script: "source/dist/main.js",
+      cwd: "/opt/scraperusa_v2",
 
       autorestart: false,
       watch: false,
-      cron_restart: "*/3 * * * *",
-      exp_backoff_restart_delay: 0,
 
+      // CRON → rodar a cada 3 minutos
+      cron_restart: "*/3 * * * *",
+
+      exp_backoff_restart_delay: 0,
       env: {
         NODE_ENV: "production",
         SUPABASE_URL: "https://hlthyxpkwvfdqqrihlkg.supabase.co",
-        SUPABASE_SERVICE_ROLE:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsdGh5eHBrd3ZmZHFxcmlobGtnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NTI0OTA5OCwiZXhwIjoyMDYwODI1MDk4fQ.RzAcPSydnO7ibM9-Zf9r2QGHIj-9MchwjmN-C3ZIPok",
+        SUPABASE_SERVICE_ROLE: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....",
       },
     },
   ],

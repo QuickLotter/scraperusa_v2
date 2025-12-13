@@ -1,4 +1,3 @@
-// src/main.ts
 import "dotenv/config";
 import { runScheduler } from "./scheduler/scheduler";
 
