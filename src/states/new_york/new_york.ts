@@ -2,7 +2,7 @@ import { GameDefinition } from "../../types";
 
 export const NEW_YORK_GAMES: GameDefinition[] = [
   {
-    game_id: "megamillions_ny",
+    game_id: "megamillions",
     state: "NY",
     displayName: "Mega Millions",
     url: "https://www.lotteryusa.com/new-york/mega-millions/",
@@ -14,7 +14,7 @@ export const NEW_YORK_GAMES: GameDefinition[] = [
   },
 
   {
-    game_id: "powerball_ny",
+    game_id: "powerball",
     state: "NY",
     displayName: "Powerball",
     url: "https://www.lotteryusa.com/new-york/powerball/",
@@ -26,7 +26,7 @@ export const NEW_YORK_GAMES: GameDefinition[] = [
   },
 
   {
-    game_id: "cash4life_ny",
+    game_id: "cash4life",
     state: "NY",
     displayName: "Cash4Life",
     url: "https://www.lotteryusa.com/new-york/cash4life/",
