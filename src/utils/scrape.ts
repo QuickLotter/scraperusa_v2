@@ -168,18 +168,18 @@ export async function scrapeGame(
   }
 
   // ===========================================================
-  // REGRAS ESPECIAIS — CASH4LIFE / LUCKY FOR LIFE
+  // REGRAS ESPECIAIS — millionaire4life / LUCKY FOR LIFE
   // ===========================================================
   if (
     [
-      "cash4life_ny",
-      "cash4life_fl",
+      "millionaire4life_ny",
+      "millionaire4life_fl",
       "luckyforlife_oh",
       "luckyforlife_id",
     ].includes(game.game_id)
   ) {
-    est_jackpot = "$1,000 Per day for life";
-    next_est_jackpot = "$1,000";
+    est_jackpot = "$1 Million Per year for life";
+    next_est_jackpot = "$1 Million";
     cash_value = null;
   }
 

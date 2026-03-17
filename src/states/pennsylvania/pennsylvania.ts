@@ -134,10 +134,10 @@ export const PENNSYLVANIA_GAMES: GameDefinition[] = [
   },
 
   {
-    game_id: "cash4life_pa",
+    game_id: "millionaire4life_pa",
     state: "PA",
-    displayName: "Cash4Life",
-    url: "https://www.lotteryusa.com/pennsylvania/cash4life/",
+    displayName: "millionaire4life",
+    url: "https://www.lotteryusa.com/pennsylvania/millionaire4life/",
     mainNumbers: 5,
     hasExtraBall: true,
     supportsCashValue: true,

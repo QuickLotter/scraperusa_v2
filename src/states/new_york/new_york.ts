@@ -26,10 +26,10 @@ export const NEW_YORK_GAMES: GameDefinition[] = [
   },
 
   {
-    game_id: "cash4life",
+    game_id: "millionaire4life",
     state: "NY",
-    displayName: "Cash4Life",
-    url: "https://www.lotteryusa.com/new-york/cash4life/",
+    displayName: "millionaire4life",
+    url: "https://www.lotteryusa.com/new-york/millionaire4life/",
     mainNumbers: 5,
     hasExtraBall: true,
     supportsCashValue: true,
