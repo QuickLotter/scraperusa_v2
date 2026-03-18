@@ -133,15 +133,4 @@ export const PENNSYLVANIA_GAMES: GameDefinition[] = [
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
   },
 
-  {
-    game_id: "millionaire4life_pa",
-    state: "PA",
-    displayName: "millionaire4life",
-    url: "https://www.lotteryusa.com/pennsylvania/millionaire4life/",
-    mainNumbers: 5,
-    hasExtraBall: true,
-    supportsCashValue: true,
-    drawTimeET: "09:00 PM",
-    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
-  },
 ];
