@@ -1,0 +1,38 @@
+name: Deploy scraperusa_v2 to VPS2
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "${{ secrets.VPS2_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "${{ secrets.VPS2_PORT }}" -H "${{ secrets.VPS2_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy on VPS2
+        run: |
+          ssh -i ~/.ssh/deploy_key -p "${{ secrets.VPS2_PORT }}" "${{ secrets.VPS2_USER }}@${{ secrets.VPS2_HOST }}" << 'EOF'
+            set -e
+            cd /opt/scraperusa_v2
+            git pull origin main
+            npm ci
+            npm run build
+            pm2 restart scraperusa_v2
+            pm2 save
+          EOF
