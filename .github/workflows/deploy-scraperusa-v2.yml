@@ -17,17 +17,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Validate secrets
+        run: |
+          test -n "${{ secrets.SCRAPE_HOST }}" || (echo "SCRAPE_HOST vazio" && exit 1)
+          test -n "${{ secrets.SCRAPE_USER }}" || (echo "SCRAPE_USER vazio" && exit 1)
+          test -n "${{ secrets.SCRAPE_PORT }}" || (echo "SCRAPE_PORT vazio" && exit 1)
+          test -n "${{ secrets.SCRAPE_SSH_KEY }}" || (echo "SCRAPE_SSH_KEY vazio" && exit 1)
+          echo "Secrets OK"
+
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "${{ secrets.VPS2_SSH_KEY }}" > ~/.ssh/deploy_key
+          echo "${{ secrets.SCRAPE_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p "${{ secrets.VPS2_PORT }}" -H "${{ secrets.VPS2_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -p "${{ secrets.SCRAPE_PORT }}" -H "${{ secrets.SCRAPE_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Deploy on VPS2
         run: |
-          ssh -i ~/.ssh/deploy_key -p "${{ secrets.VPS2_PORT }}" "${{ secrets.VPS2_USER }}@${{ secrets.VPS2_HOST }}" << 'EOF'
+          ssh -i ~/.ssh/deploy_key -p "${{ secrets.SCRAPE_PORT }}" "${{ secrets.SCRAPE_USER }}@${{ secrets.SCRAPE_HOST }}" << 'EOF'
             set -e
             cd /opt/scraperusa_v2
             git pull origin main
