@@ -38,7 +38,8 @@ jobs:
           ssh -i ~/.ssh/deploy_key -p "${{ secrets.SCRAPE_PORT }}" "${{ secrets.SCRAPE_USER }}@${{ secrets.SCRAPE_HOST }}" << 'EOF'
             set -e
             cd /opt/scraperusa_v2
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
             npm ci
             npm run build
             pm2 restart scraperusa_v2
