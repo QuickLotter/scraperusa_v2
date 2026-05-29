@@ -1,16 +1,21 @@
 // src/supabase/save.ts
 import { supabase } from "./supabaseClient";
-import { ScrapedResult } from "../types";
+import { GameDefinition, ScrapedResult } from "../types";
 
 /**
- * Salva no banco APENAS se houver mudança real
+ * Salva no banco APENAS se houver mudança real.
+ * A tabela de destino é definida por game.table (default: "results_all").
  */
-export async function saveResult(result: ScrapedResult): Promise<boolean> {
+export async function saveResult(
+  result: ScrapedResult,
+  game: GameDefinition
+): Promise<boolean> {
   const { game_id, draw_date } = result;
+  const table = game.table ?? "results_all";
 
   // Busca o registro existente
   const { data: existing } = await supabase
-    .from("results_all")
+    .from(table)
     .select("*")
     .eq("game_id", game_id)
     .eq("draw_date", draw_date)
@@ -19,9 +24,9 @@ export async function saveResult(result: ScrapedResult): Promise<boolean> {
   // 1️⃣ Não existe → inserir
   if (!existing) {
     console.log(
-      `🟢 Novo resultado encontrado → insert ${game_id} ${draw_date}`
+      `🟢 Novo resultado encontrado → insert [${table}] ${game_id} ${draw_date}`
     );
-    const { error } = await supabase.from("results_all").insert([result]);
+    const { error } = await supabase.from(table).insert([result]);
     if (error) throw error;
     return true;
   }
@@ -35,15 +40,15 @@ export async function saveResult(result: ScrapedResult): Promise<boolean> {
     (existing.next_est_jackpot || "") !== (result.next_est_jackpot || "");
 
   if (!changed) {
-    console.log(`⏹ Sem mudanças → ignorado ${game_id} ${draw_date}`);
+    console.log(`⏹ Sem mudanças → ignorado [${table}] ${game_id} ${draw_date}`);
     return false;
   }
 
   // 3️⃣ Atualizar somente se mudou
-  console.log(`🟡 Mudança detectada → update ${game_id} ${draw_date}`);
+  console.log(`🟡 Mudança detectada → update [${table}] ${game_id} ${draw_date}`);
 
   const { error } = await supabase
-    .from("results_all")
+    .from(table)
     .update(result)
     .eq("game_id", game_id)
     .eq("draw_date", draw_date);

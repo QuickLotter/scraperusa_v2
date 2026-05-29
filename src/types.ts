@@ -10,6 +10,8 @@ export interface GameDefinition {
   supportsCashValue?: boolean;
   drawTimeET: string;
   daysOfWeek: number[];
+  /** Tabela Supabase de destino. Default: "results_all" */
+  table?: string;
 }
 
 export interface ScrapedResult {

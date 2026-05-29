@@ -7,6 +7,7 @@ import { TEXAS_GAMES } from "./texas/texas";
 import { IDAHO_GAMES } from "./idaho/idaho";
 import { ARIZONA_GAMES } from "./arizona/arizona";
 import { CALIFORNIA_GAMES } from "./california/california";
+import { FLORIDA_GAMES } from "./florida/florida";
 
 export const ALL_GAMES = [
   ...NEW_YORK_GAMES,
@@ -16,4 +17,5 @@ export const ALL_GAMES = [
   ...IDAHO_GAMES,
   ...ARIZONA_GAMES,
   ...CALIFORNIA_GAMES,
+  ...FLORIDA_GAMES,
 ];

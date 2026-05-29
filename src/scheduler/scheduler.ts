@@ -37,7 +37,8 @@ export async function runScheduler() {
         continue;
       }
 
-      const updated = await saveResult(scraped);
+      // Passa o game para saveResult rotear para a tabela correta
+      const updated = await saveResult(scraped, game);
 
       if (updated) {
         totalUpdated++;

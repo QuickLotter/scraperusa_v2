@@ -28,7 +28,8 @@ async function forceRun() {
         continue;
       }
 
-      const saved = await saveResult(scraped);
+      // Passa o game para rotear para a tabela correta
+      const saved = await saveResult(scraped, game);
 
       if (saved) {
         updated++;
