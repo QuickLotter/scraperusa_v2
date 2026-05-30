@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "scraperusa_v2",
 
-      script: "source/dist/main.js",
+      script: "dist/main.js",
       cwd: "/opt/scraperusa_v2",
 
       autorestart: false,
@@ -17,13 +17,13 @@ module.exports = {
       env: {
         NODE_ENV: "production",
         SUPABASE_URL: "https://hlthyxpkwvfdqqrihlkg.supabase.co",
-        SUPABASE_SERVICE_ROLE: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....",
+        SUPABASE_SERVICE_ROLE: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsdGh5eHBrd3ZmZHFxcmlobGtnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NTI0OTA5OCwiZXhwIjoyMDYwODI1MDk4fQ.RzAcPSydnO7ibM9-Zf9r2QGHIj-9MchwjmN-C3ZIPok",
       },
     },
     {
       name: "quickdraw_watcher",
 
-      script: "source/dist/quickdraw/main.js",
+      script: "dist/quickdraw/main.js",
       cwd: "/opt/scraperusa_v2",
 
       // Roda continuamente — reinicia se cair
@@ -35,7 +35,7 @@ module.exports = {
       env: {
         NODE_ENV: "production",
         SUPABASE_URL: "https://hlthyxpkwvfdqqrihlkg.supabase.co",
-        SUPABASE_SERVICE_ROLE: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....",
+        SUPABASE_SERVICE_ROLE: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsdGh5eHBrd3ZmZHFxcmlobGtnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NTI0OTA5OCwiZXhwIjoyMDYwODI1MDk4fQ.RzAcPSydnO7ibM9-Zf9r2QGHIj-9MchwjmN-C3ZIPok",
       },
     },
   ],
