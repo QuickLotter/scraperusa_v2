@@ -1,0 +1,40 @@
+import { GameDefinition } from "../../types";
+
+export const KANSAS_GAMES: GameDefinition[] = [
+  {
+    game_id: "kslotto_ks",
+    state: "KS",
+    displayName: "Kansas Lottery",
+    url: "https://www.lotteryusa.com/kansas/2-by-2/",
+    mainNumbers: 4,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "09:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ks",
+  },
+  {
+    game_id: "pick3_ks",
+    state: "KS",
+    displayName: "Pick 3",
+    url: "https://www.lotteryusa.com/kansas/pick-3/",
+    mainNumbers: 3,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "09:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ks",
+  },
+  {
+    game_id: "superkcash_ks",
+    state: "KS",
+    displayName: "Super Kansas Cash",
+    url: "https://www.lotteryusa.com/kansas/super-kansas-cash/",
+    mainNumbers: 5,
+    hasExtraBall: true,
+    supportsCashValue: false,
+    drawTimeET: "09:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ks",
+  },
+];

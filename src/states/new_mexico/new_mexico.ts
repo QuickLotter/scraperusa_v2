@@ -1,0 +1,40 @@
+import { GameDefinition } from "../../types";
+
+export const NEW_MEXICO_GAMES: GameDefinition[] = [
+  {
+    game_id: "roadrunner_nm",
+    state: "NM",
+    displayName: "Roadrunner Cash",
+    url: "https://www.lotteryusa.com/new-mexico/roadrunner-cash/",
+    mainNumbers: 5,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "08:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_nm",
+  },
+  {
+    game_id: "pick3_nm",
+    state: "NM",
+    displayName: "Pick 3",
+    url: "https://www.lotteryusa.com/new-mexico/pick-3/",
+    mainNumbers: 3,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "08:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_nm",
+  },
+  {
+    game_id: "pick4_nm",
+    state: "NM",
+    displayName: "Pick 4",
+    url: "https://www.lotteryusa.com/new-mexico/pick-4/",
+    mainNumbers: 4,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "08:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_nm",
+  },
+];

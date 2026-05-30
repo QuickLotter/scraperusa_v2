@@ -1,0 +1,40 @@
+import { GameDefinition } from "../../types";
+
+export const MINNESOTA_GAMES: GameDefinition[] = [
+  {
+    game_id: "mnlotto_mn",
+    state: "MN",
+    displayName: "Northstar Cash",
+    url: "https://www.lotteryusa.com/minnesota/northstar-cash/",
+    mainNumbers: 5,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "10:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_mn",
+  },
+  {
+    game_id: "daily3_mn",
+    state: "MN",
+    displayName: "Daily 3",
+    url: "https://www.lotteryusa.com/minnesota/daily-3/",
+    mainNumbers: 3,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "06:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_mn",
+  },
+  {
+    game_id: "gopher5_mn",
+    state: "MN",
+    displayName: "Gopher 5",
+    url: "https://www.lotteryusa.com/minnesota/gopher-5/",
+    mainNumbers: 5,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "10:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_mn",
+  },
+];

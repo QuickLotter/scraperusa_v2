@@ -1,0 +1,40 @@
+import { GameDefinition } from "../../types";
+
+export const WEST_VIRGINIA_GAMES: GameDefinition[] = [
+  {
+    game_id: "wvlotto_wv",
+    state: "WV",
+    displayName: "Cash 25",
+    url: "https://www.lotteryusa.com/west-virginia/cash-25/",
+    mainNumbers: 6,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "07:29 PM",
+    daysOfWeek: [1, 3, 5],
+    table: "results_wv",
+  },
+  {
+    game_id: "daily3_wv",
+    state: "WV",
+    displayName: "Daily 3",
+    url: "https://www.lotteryusa.com/west-virginia/daily-3/",
+    mainNumbers: 3,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "07:29 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_wv",
+  },
+  {
+    game_id: "daily4_wv",
+    state: "WV",
+    displayName: "Daily 4",
+    url: "https://www.lotteryusa.com/west-virginia/daily-4/",
+    mainNumbers: 4,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "07:29 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_wv",
+  },
+];

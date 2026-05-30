@@ -1,0 +1,40 @@
+import { GameDefinition } from "../../types";
+
+export const OREGON_GAMES: GameDefinition[] = [
+  {
+    game_id: "megabucks_or",
+    state: "OR",
+    displayName: "Megabucks",
+    url: "https://www.lotteryusa.com/oregon/megabucks/",
+    mainNumbers: 6,
+    hasExtraBall: false,
+    supportsCashValue: true,
+    drawTimeET: "08:00 PM",
+    daysOfWeek: [1, 3, 6],
+    table: "results_or",
+  },
+  {
+    game_id: "win4life_or",
+    state: "OR",
+    displayName: "Win for Life",
+    url: "https://www.lotteryusa.com/oregon/win-for-life/",
+    mainNumbers: 6,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "08:00 PM",
+    daysOfWeek: [1, 4],
+    table: "results_or",
+  },
+  {
+    game_id: "pick4_or",
+    state: "OR",
+    displayName: "Pick 4",
+    url: "https://www.lotteryusa.com/oregon/pick-4/",
+    mainNumbers: 4,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "08:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_or",
+  },
+];

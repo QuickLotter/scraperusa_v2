@@ -1,0 +1,40 @@
+import { GameDefinition } from "../../types";
+
+export const MASSACHUSETTS_GAMES: GameDefinition[] = [
+  {
+    game_id: "massmegabucks_ma",
+    state: "MA",
+    displayName: "Megabucks Doubler",
+    url: "https://www.lotteryusa.com/massachusetts/megabucks-doubler/",
+    mainNumbers: 6,
+    hasExtraBall: false,
+    supportsCashValue: true,
+    drawTimeET: "09:00 PM",
+    daysOfWeek: [3, 6],
+    table: "results_ma",
+  },
+  {
+    game_id: "masscash_ma",
+    state: "MA",
+    displayName: "Mass Cash",
+    url: "https://www.lotteryusa.com/massachusetts/mass-cash/",
+    mainNumbers: 5,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "09:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ma",
+  },
+  {
+    game_id: "numbers_ma",
+    state: "MA",
+    displayName: "Numbers Game",
+    url: "https://www.lotteryusa.com/massachusetts/numbers-game-midday/",
+    mainNumbers: 4,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "01:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ma",
+  },
+];

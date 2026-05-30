@@ -1,0 +1,40 @@
+import { GameDefinition } from "../../types";
+
+export const MISSISSIPPI_GAMES: GameDefinition[] = [
+  {
+    game_id: "mslotto_ms",
+    state: "MS",
+    displayName: "MS Match 5",
+    url: "https://www.lotteryusa.com/mississippi/match-5/",
+    mainNumbers: 5,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "10:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ms",
+  },
+  {
+    game_id: "pick3_ms",
+    state: "MS",
+    displayName: "Pick 3",
+    url: "https://www.lotteryusa.com/mississippi/pick-3/",
+    mainNumbers: 3,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "10:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ms",
+  },
+  {
+    game_id: "pick4_ms",
+    state: "MS",
+    displayName: "Pick 4",
+    url: "https://www.lotteryusa.com/mississippi/pick-4/",
+    mainNumbers: 4,
+    hasExtraBall: false,
+    supportsCashValue: false,
+    drawTimeET: "10:00 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ms",
+  },
+];
