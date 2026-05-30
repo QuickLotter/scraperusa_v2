@@ -2,50 +2,89 @@ import axios from "axios";
 import { supabase } from "../supabase/supabaseClient";
 import { DateTime } from "luxon";
 
-const NY_OPEN_DATA_URL =
-  "https://data.ny.gov/resource/7sqk-ycpk.json";
+// ─── Endpoints oficiais do NY Lottery ───────────────────────────────────────
+// Endpoint 1: tempo real, todos os jogos, últimos ~8 sorteios por jogo
+const ALL_DRAWS_URL = "https://nylottery.ny.gov/nyl-api/games/all/draws";
 
-const POLL_INTERVAL_MS = 3 * 60 * 1000; // 3 minutos
-const FETCH_LIMIT = 20; // últimos 20 sorteios por poll (cobre ~80 min)
+// Endpoint 2: histórico paginado, apenas Quick Draw, 25 por página
+const HISTORY_URL =
+  "https://nylottery.ny.gov/drupal-api/api/v2/winning_numbers?format=json&nid=400&sort_by=draw_number&page=";
 
-interface NYOpenDataRow {
-  draw_date: string;
-  draw_nbr: string;
-  winning_numbers: string;
-  bonus?: string;
-  multiplier?: string;
-}
+const POLL_INTERVAL_MS = 60 * 1000; // 1 minuto (sorteio a cada 4 min)
+
+const HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Mobile Safari/537.36",
+  Accept: "application/json, text/plain, */*",
+  Referer: "https://nylottery.ny.gov/all-winning-numbers?nid=400",
+};
 
 interface QuickDrawResult {
-  game_id: string;
+  game_id: "quickdraw_ny";
   draw_date: string;
   draw_number: number;
   draw_time: string | null;
   numbers: number[];
   extra_number: number | null;
   multiplier: string | null;
+  est_jackpot: string | null;
 }
 
-function parseRow(row: NYOpenDataRow): QuickDrawResult | null {
-  try {
-    const drawDateRaw = row.draw_date ?? "";
-    const drawDate = drawDateRaw.slice(0, 10); // "2026-05-30"
-    const drawTime = drawDateRaw.length > 10
-      ? drawDateRaw.slice(11, 19)
+// ─── Parse do endpoint /nyl-api/games/all/draws ─────────────────────────────
+function parseAllDrawsResponse(data: any): QuickDrawResult[] {
+  const results: QuickDrawResult[] = [];
+  const qd = data?.data?.quickdraw;
+  if (!qd?.draws) return results;
+
+  for (const draw of qd.draws) {
+    if (!draw.results || draw.status !== 22) continue; // status 22 = resultado publicado
+
+    const drawNumber = draw.drawNumber;
+    const resultDate = new Date(draw.resultDate);
+    const drawDate = DateTime.fromJSDate(resultDate)
+      .setZone("America/New_York")
+      .toFormat("yyyy-MM-dd");
+    const drawTime = DateTime.fromJSDate(resultDate)
+      .setZone("America/New_York")
+      .toFormat("HH:mm:ss");
+
+    const primary = draw.results[0]?.primary ?? [];
+    const numbers = primary.map((n: string) => parseInt(n, 10));
+    if (numbers.length !== 20) continue;
+
+    const multiplier = draw.results[0]?.multiplier
+      ? String(draw.results[0].multiplier)
       : null;
 
-    const drawNumber = parseInt(row.draw_nbr ?? "0", 10);
-    if (!drawNumber) return null;
+    results.push({
+      game_id: "quickdraw_ny",
+      draw_date: drawDate,
+      draw_number: drawNumber,
+      draw_time: drawTime,
+      numbers,
+      extra_number: null,
+      multiplier,
+      est_jackpot: null,
+    });
+  }
 
-    const numbers = (row.winning_numbers ?? "")
-      .split(" ")
-      .map((n) => parseInt(n, 10))
-      .filter((n) => !isNaN(n));
+  return results;
+}
 
-    if (numbers.length !== 20) return null;
+// ─── Parse do endpoint /drupal-api (histórico paginado) ──────────────────────
+function parseHistoryRow(row: any): QuickDrawResult | null {
+  try {
+    const drawDate = row.date; // "2026-05-30"
+    const drawTime = row.draw_time; // "08:56:00"
+    const drawNumber = parseInt(row.draw_number, 10);
+    const numbers = (row.winning_numbers ?? []).map((n: string) =>
+      parseInt(n, 10)
+    );
+    if (numbers.length !== 20 || !drawNumber) return null;
 
-    const extraNumber = row.bonus ? parseInt(row.bonus, 10) : null;
-    const multiplier = row.multiplier ?? null;
+    const multiplier = row.multiplier && row.multiplier !== "00"
+      ? row.multiplier
+      : null;
 
     return {
       game_id: "quickdraw_ny",
@@ -53,92 +92,114 @@ function parseRow(row: NYOpenDataRow): QuickDrawResult | null {
       draw_number: drawNumber,
       draw_time: drawTime,
       numbers,
-      extra_number: extraNumber,
+      extra_number: null,
       multiplier,
+      est_jackpot: row.jackpot ? String(row.jackpot) : null,
     };
   } catch {
     return null;
   }
 }
 
-async function fetchLatestDraws(): Promise<QuickDrawResult[]> {
-  const response = await axios.get<NYOpenDataRow[]>(NY_OPEN_DATA_URL, {
-    params: {
-      $limit: FETCH_LIMIT,
-      $order: "draw_date DESC",
-    },
-    timeout: 15000,
-  });
-
-  const results: QuickDrawResult[] = [];
-  for (const row of response.data) {
-    const parsed = parseRow(row);
-    if (parsed) results.push(parsed);
-  }
-
-  return results;
-}
-
+// ─── Salvar no Supabase ───────────────────────────────────────────────────────
 async function saveDraws(draws: QuickDrawResult[]): Promise<number> {
   if (!draws.length) return 0;
 
-  const { error } = await supabase
-    .from("results_ny")
-    .upsert(draws, {
-      onConflict: "game_id,draw_date,draw_number",
-      ignoreDuplicates: true,
-    });
+  const { error } = await supabase.from("results_ny").upsert(draws, {
+    onConflict: "game_id,draw_date,draw_number",
+    ignoreDuplicates: true,
+  });
 
   if (error) {
-    console.error("❌ Erro ao salvar Quick Draw:", error.message);
+    console.error("❌ Erro ao salvar:", error.message);
     return 0;
   }
-
   return draws.length;
 }
 
-async function poll(): Promise<void> {
+// ─── Poll em tempo real ──────────────────────────────────────────────────────
+async function pollRealtime(): Promise<void> {
   const nowET = DateTime.now().setZone("America/New_York");
+  const h = nowET.hour;
+  const m = nowET.minute;
 
-  // Quick Draw fecha das 3:30am às 4:00am ET
-  const hour = nowET.hour;
-  const minute = nowET.minute;
-  if (hour === 3 && minute >= 30) {
-    console.log("⏸️  Quick Draw fechado (3:30-4:00 AM ET) — aguardando...");
+  // Quick Draw fecha 3:30–4:00 AM ET
+  if (h === 3 && m >= 30) {
+    console.log("⏸️  Quick Draw fechado (3:30-4:00 AM ET)");
     return;
   }
 
-  console.log(`\n🎱 Quick Draw poll — ${nowET.toFormat("HH:mm:ss")} ET`);
-
   try {
-    const draws = await fetchLatestDraws();
-    console.log(`  📥 ${draws.length} sorteios recebidos da API`);
+    const { data } = await axios.get(ALL_DRAWS_URL, {
+      headers: HEADERS,
+      timeout: 10000,
+    });
+
+    const draws = parseAllDrawsResponse(data);
+    if (!draws.length) {
+      console.log("  ⚠️  Nenhum resultado novo no endpoint realtime");
+      return;
+    }
 
     const saved = await saveDraws(draws);
-    console.log(`  💾 ${saved} sorteios processados`);
-
-    if (draws.length > 0) {
-      const latest = draws[0];
-      console.log(
-        `  🔢 Último draw: #${latest.draw_number} — ${latest.numbers.join(", ")}` +
-        (latest.extra_number ? ` | Bonus: ${latest.extra_number}` : "") +
-        (latest.multiplier ? ` | Money Dots: ${latest.multiplier}` : "")
-      );
-    }
+    const latest = draws[0];
+    console.log(
+      `  🎱 Draw #${latest.draw_number} @ ${latest.draw_time} ET | ` +
+        `[${latest.numbers.slice(0, 5).join(",")}...] x${latest.multiplier} | ` +
+        `${saved} salvos`
+    );
   } catch (err: any) {
-    console.error(`  ❌ Erro no poll: ${err.message}`);
+    console.error(`  ❌ Erro realtime: ${err.message}`);
   }
 }
 
+// ─── Importar histórico paginado ─────────────────────────────────────────────
+export async function importHistory(pages = 120): Promise<void> {
+  console.log(`📚 Importando histórico Quick Draw (${pages} páginas × 25)...`);
+  let total = 0;
+
+  for (let page = 0; page < pages; page++) {
+    try {
+      const url = `${HISTORY_URL}${page}`;
+      const { data } = await axios.get(url, { headers: HEADERS, timeout: 15000 });
+      const rows: any[] = data?.rows ?? [];
+      if (!rows.length) {
+        console.log(`  Página ${page}: sem dados — parando`);
+        break;
+      }
+
+      const draws = rows.map(parseHistoryRow).filter(Boolean) as QuickDrawResult[];
+      const saved = await saveDraws(draws);
+      total += saved;
+
+      console.log(
+        `  Página ${page}: ${draws.length} sorteios, ${saved} novos (total: ${total})`
+      );
+
+      // Rate limit gentil
+      await new Promise((r) => setTimeout(r, 300));
+    } catch (err: any) {
+      console.error(`  ❌ Página ${page} erro: ${err.message}`);
+    }
+  }
+
+  console.log(`✅ Histórico importado: ${total} sorteios`);
+}
+
+// ─── Watcher principal ────────────────────────────────────────────────────────
 export async function startQuickDrawWatcher(): Promise<void> {
   console.log("🚀 Quick Draw Watcher iniciado");
-  console.log(`⏱️  Polling a cada ${POLL_INTERVAL_MS / 1000}s`);
+  console.log(`   Realtime: ${ALL_DRAWS_URL}`);
+  console.log(`   Histórico: ${HISTORY_URL}0`);
+  console.log(`   Poll: a cada ${POLL_INTERVAL_MS / 1000}s\n`);
 
-  // Poll imediato ao iniciar
-  await poll();
+  // Poll imediato
+  await pollRealtime();
 
   // Loop contínuo
   setInterval(async () => {
-    await poll();
+    const nowET = DateTime.now().setZone("America/New_York");
+    process.stdout.write(`[${nowET.toFormat("HH:mm:ss")} ET] `);
+    await pollRealtime();
   }, POLL_INTERVAL_MS);
 }
