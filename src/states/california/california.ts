@@ -1,26 +1,18 @@
-// src/states/california/california.ts
-
 import { GameDefinition } from "../../types";
 
 export const CALIFORNIA_GAMES: GameDefinition[] = [
-  // -----------------------
-  // SUPERLOTTO PLUS
-  // -----------------------
   {
     game_id: "superlottoplus_ca",
     state: "CA",
     displayName: "SuperLotto Plus",
     url: "https://www.lotteryusa.com/california/super-lotto-plus/",
     mainNumbers: 5,
-    hasExtraBall: true, // Mega Number
-    supportsCashValue: false,
-    drawTimeET: "11:00 PM",
-    daysOfWeek: [2, 6], // Wed & Sat
+    hasExtraBall: true,
+    supportsCashValue: true,
+    drawTimeET: "08:00 PM",
+    daysOfWeek: [3, 6],
+    table: "results_ca",
   },
-
-  // -----------------------
-  // FANTASY 5
-  // -----------------------
   {
     game_id: "fantasy5_ca",
     state: "CA",
@@ -29,13 +21,10 @@ export const CALIFORNIA_GAMES: GameDefinition[] = [
     mainNumbers: 5,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "11:00 PM",
-    daysOfWeek: [0, 1, 2, 3, 4, 5, 6], // Daily
+    drawTimeET: "06:30 PM",
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ca",
   },
-
-  // -----------------------
-  // DAILY 4
-  // -----------------------
   {
     game_id: "daily4_ca",
     state: "CA",
@@ -44,28 +33,22 @@ export const CALIFORNIA_GAMES: GameDefinition[] = [
     mainNumbers: 4,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "09:00 PM",
+    drawTimeET: "06:30 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ca",
   },
-
-  // -----------------------
-  // DAILY 3 MIDDAY
-  // -----------------------
   {
     game_id: "daily3midday_ca",
     state: "CA",
     displayName: "Daily 3 Midday",
-    url: "https://www.lotteryusa.com/california/midday-3/",
+    url: "https://www.lotteryusa.com/california/daily-3-midday/",
     mainNumbers: 3,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "03:00 PM",
+    drawTimeET: "01:00 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ca",
   },
-
-  // -----------------------
-  // DAILY 3 EVENING
-  // -----------------------
   {
     game_id: "daily3evening_ca",
     state: "CA",
@@ -74,22 +57,20 @@ export const CALIFORNIA_GAMES: GameDefinition[] = [
     mainNumbers: 3,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "09:00 PM",
+    drawTimeET: "06:30 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ca",
   },
-
-  // -----------------------
-  // DAILY DERBY
-  // -----------------------
   {
     game_id: "dailyderby_ca",
     state: "CA",
     displayName: "Daily Derby",
     url: "https://www.lotteryusa.com/california/daily-derby/",
-    mainNumbers: 3, // game format is unique but uses 3 selections
-    hasExtraBall: false,
+    mainNumbers: 3,
+    hasExtraBall: true,
     supportsCashValue: false,
-    drawTimeET: "09:00 PM",
+    drawTimeET: "06:30 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ca",
   },
 ];

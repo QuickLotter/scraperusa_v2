@@ -5,14 +5,14 @@ export const PENNSYLVANIA_GAMES: GameDefinition[] = [
     game_id: "pick2midday_pa",
     state: "PA",
     displayName: "Pick 2 Midday",
-    url: "https://www.lotteryusa.com/pennsylvania/midday-pick-2/",
+    url: "https://www.lotteryusa.com/pennsylvania/pick-2-midday/",
     mainNumbers: 2,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "01:35 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_pa",
   },
-
   {
     game_id: "pick2evening_pa",
     state: "PA",
@@ -23,20 +23,20 @@ export const PENNSYLVANIA_GAMES: GameDefinition[] = [
     supportsCashValue: false,
     drawTimeET: "06:59 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_pa",
   },
-
   {
     game_id: "pick3midday_pa",
     state: "PA",
     displayName: "Pick 3 Midday",
-    url: "https://www.lotteryusa.com/pennsylvania/midday-pick-3/",
+    url: "https://www.lotteryusa.com/pennsylvania/pick-3-midday/",
     mainNumbers: 3,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "01:35 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_pa",
   },
-
   {
     game_id: "pick3evening_pa",
     state: "PA",
@@ -47,20 +47,20 @@ export const PENNSYLVANIA_GAMES: GameDefinition[] = [
     supportsCashValue: false,
     drawTimeET: "06:59 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_pa",
   },
-
   {
     game_id: "pick4midday_pa",
     state: "PA",
     displayName: "Pick 4 Midday",
-    url: "https://www.lotteryusa.com/pennsylvania/midday-pick-4/",
+    url: "https://www.lotteryusa.com/pennsylvania/pick-4-midday/",
     mainNumbers: 4,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "01:35 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_pa",
   },
-
   {
     game_id: "pick4evening_pa",
     state: "PA",
@@ -71,20 +71,20 @@ export const PENNSYLVANIA_GAMES: GameDefinition[] = [
     supportsCashValue: false,
     drawTimeET: "06:59 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_pa",
   },
-
   {
     game_id: "pick5midday_pa",
     state: "PA",
     displayName: "Pick 5 Midday",
-    url: "https://www.lotteryusa.com/pennsylvania/midday-pick-5/",
+    url: "https://www.lotteryusa.com/pennsylvania/pick-5-midday/",
     mainNumbers: 5,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "01:35 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_pa",
   },
-
   {
     game_id: "pick5evening_pa",
     state: "PA",
@@ -95,8 +95,8 @@ export const PENNSYLVANIA_GAMES: GameDefinition[] = [
     supportsCashValue: false,
     drawTimeET: "06:59 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_pa",
   },
-
   {
     game_id: "treasurehunt_pa",
     state: "PA",
@@ -105,10 +105,10 @@ export const PENNSYLVANIA_GAMES: GameDefinition[] = [
     mainNumbers: 5,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "01:35 PM",
+    drawTimeET: "07:00 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_pa",
   },
-
   {
     game_id: "cash5_pa",
     state: "PA",
@@ -117,10 +117,10 @@ export const PENNSYLVANIA_GAMES: GameDefinition[] = [
     mainNumbers: 5,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "06:59 PM",
+    drawTimeET: "07:00 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_pa",
   },
-
   {
     game_id: "match6_pa",
     state: "PA",
@@ -128,9 +128,20 @@ export const PENNSYLVANIA_GAMES: GameDefinition[] = [
     url: "https://www.lotteryusa.com/pennsylvania/match-6/",
     mainNumbers: 6,
     hasExtraBall: false,
+    supportsCashValue: true,
+    drawTimeET: "07:00 PM",
+    daysOfWeek: [1, 3, 5],
+    table: "results_pa",
+  },
+  {
+    game_id: "millionaire4life",
+    state: "PA",
+    displayName: "Millionaire for Life",
+    url: "https://www.lotteryusa.com/pennsylvania/millionaire-for-life/",
+    mainNumbers: 5,
+    hasExtraBall: true,
     supportsCashValue: false,
-    drawTimeET: "06:59 PM",
+    drawTimeET: "11:00 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
   },
-
 ];

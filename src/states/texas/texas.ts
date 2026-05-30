@@ -1,11 +1,6 @@
-// src/states/texas/texas.ts
-
 import { GameDefinition } from "../../types";
 
 export const TEXAS_GAMES: GameDefinition[] = [
-  // -----------------------
-  // LOTTO TEXAS
-  // -----------------------
   {
     game_id: "lottotexas_tx",
     state: "TX",
@@ -13,14 +8,11 @@ export const TEXAS_GAMES: GameDefinition[] = [
     url: "https://www.lotteryusa.com/texas/lotto-texas/",
     mainNumbers: 6,
     hasExtraBall: false,
-    supportsCashValue: false,
+    supportsCashValue: true,
     drawTimeET: "11:12 PM",
-    daysOfWeek: [1, 6], // Mon, Sat
+    daysOfWeek: [3, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // TEXAS TWO STEP
-  // -----------------------
   {
     game_id: "texastwostep_tx",
     state: "TX",
@@ -30,72 +22,57 @@ export const TEXAS_GAMES: GameDefinition[] = [
     hasExtraBall: true,
     supportsCashValue: false,
     drawTimeET: "10:12 PM",
-    daysOfWeek: [1, 4], // Mon, Thu
+    daysOfWeek: [1, 4],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // CASH FIVE
-  // -----------------------
   {
     game_id: "cashfive_tx",
     state: "TX",
     displayName: "Cash Five",
-    url: "https://www.lotteryusa.com/texas/cash-5/",
+    url: "https://www.lotteryusa.com/texas/cash-five/",
     mainNumbers: 5,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "10:12 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // DAILY 4 — MORNING
-  // -----------------------
   {
     game_id: "daily4morning_tx",
     state: "TX",
     displayName: "Daily 4 Morning",
-    url: "https://www.lotteryusa.com/texas/morning-pick-4/",
+    url: "https://www.lotteryusa.com/texas/daily-4-morning/",
     mainNumbers: 4,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "10:00 AM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // DAILY 4 — DAY
-  // -----------------------
   {
     game_id: "daily4day_tx",
     state: "TX",
     displayName: "Daily 4 Day",
-    url: "https://www.lotteryusa.com/texas/midday-4/",
+    url: "https://www.lotteryusa.com/texas/daily-4-day/",
     mainNumbers: 4,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "12:27 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // DAILY 4 — EVENING
-  // -----------------------
   {
     game_id: "daily4evening_tx",
     state: "TX",
     displayName: "Daily 4 Evening",
-    url: "https://www.lotteryusa.com/texas/evening-pick-4/",
+    url: "https://www.lotteryusa.com/texas/daily-4-evening/",
     mainNumbers: 4,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "06:00 PM",
+    drawTimeET: "06:27 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // DAILY 4 — NIGHT
-  // -----------------------
   {
     game_id: "daily4night_tx",
     state: "TX",
@@ -106,56 +83,44 @@ export const TEXAS_GAMES: GameDefinition[] = [
     supportsCashValue: false,
     drawTimeET: "10:12 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // PICK 3 — MORNING
-  // -----------------------
   {
     game_id: "pick3morning_tx",
     state: "TX",
     displayName: "Pick 3 Morning",
-    url: "https://www.lotteryusa.com/texas/morning-pick-3/",
+    url: "https://www.lotteryusa.com/texas/pick-3-morning/",
     mainNumbers: 3,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "10:00 AM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // PICK 3 — DAY
-  // -----------------------
   {
     game_id: "pick3day_tx",
     state: "TX",
     displayName: "Pick 3 Day",
-    url: "https://www.lotteryusa.com/texas/midday-pick-3/",
+    url: "https://www.lotteryusa.com/texas/pick-3-day/",
     mainNumbers: 3,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "12:27 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // PICK 3 — EVENING
-  // -----------------------
   {
     game_id: "pick3evening_tx",
     state: "TX",
     displayName: "Pick 3 Evening",
-    url: "https://www.lotteryusa.com/texas/evening-pick-3/",
+    url: "https://www.lotteryusa.com/texas/pick-3-evening/",
     mainNumbers: 3,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "06:00 PM",
+    drawTimeET: "06:27 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // PICK 3 — NIGHT
-  // -----------------------
   {
     game_id: "pick3night_tx",
     state: "TX",
@@ -166,65 +131,54 @@ export const TEXAS_GAMES: GameDefinition[] = [
     supportsCashValue: false,
     drawTimeET: "10:12 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // ALL OR NOTHING — MORNING
-  // -----------------------
   {
     game_id: "allornothingmorning_tx",
     state: "TX",
     displayName: "All or Nothing Morning",
-    url: "https://www.lotteryusa.com/texas/morning-all-or-nothing/",
+    url: "https://www.lotteryusa.com/texas/all-or-nothing-morning/",
     mainNumbers: 12,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "10:00 AM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // ALL OR NOTHING — DAY
-  // -----------------------
   {
     game_id: "allornothingday_tx",
     state: "TX",
     displayName: "All or Nothing Day",
-    url: "https://www.lotteryusa.com/texas/day-all-or-nothing/",
+    url: "https://www.lotteryusa.com/texas/all-or-nothing-day/",
     mainNumbers: 12,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "12:27 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // ALL OR NOTHING — EVENING
-  // -----------------------
   {
     game_id: "allornothingevening_tx",
     state: "TX",
     displayName: "All or Nothing Evening",
-    url: "https://www.lotteryusa.com/texas/evening-all-or-nothing/",
+    url: "https://www.lotteryusa.com/texas/all-or-nothing-evening/",
     mainNumbers: 12,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "06:00 PM",
+    drawTimeET: "06:27 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
-
-  // -----------------------
-  // ALL OR NOTHING — NIGHT
-  // -----------------------
   {
     game_id: "allornothingnight_tx",
     state: "TX",
     displayName: "All or Nothing Night",
-    url: "https://www.lotteryusa.com/texas/night-all-or-nothing/",
+    url: "https://www.lotteryusa.com/texas/all-or-nothing/",
     mainNumbers: 12,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "10:12 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_tx",
   },
 ];

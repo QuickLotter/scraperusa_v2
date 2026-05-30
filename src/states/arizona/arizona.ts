@@ -1,11 +1,6 @@
-// src/states/arizona/arizona.ts
-
 import { GameDefinition } from "../../types";
 
 export const ARIZONA_GAMES: GameDefinition[] = [
-  // -----------------------
-  // THE PICK
-  // -----------------------
   {
     game_id: "thepick_az",
     state: "AZ",
@@ -13,29 +8,23 @@ export const ARIZONA_GAMES: GameDefinition[] = [
     url: "https://www.lotteryusa.com/arizona/the-pick/",
     mainNumbers: 6,
     hasExtraBall: false,
-    supportsCashValue: false,
+    supportsCashValue: true,
     drawTimeET: "09:00 PM",
-    daysOfWeek: [3, 6], // Wed & Sat
+    daysOfWeek: [3, 6],
+    table: "results_az",
   },
-
-  // -----------------------
-  // TRIPLE TWIST
-  // -----------------------
   {
     game_id: "tripletwist_az",
     state: "AZ",
     displayName: "Triple Twist",
     url: "https://www.lotteryusa.com/arizona/triple-twist/",
-    mainNumbers: 6,
+    mainNumbers: 4,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "09:00 PM",
-    daysOfWeek: [0, 1, 2, 3, 4, 5, 6], // Daily
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_az",
   },
-
-  // -----------------------
-  // FANTASY 5
-  // -----------------------
   {
     game_id: "fantasy5_az",
     state: "AZ",
@@ -45,12 +34,9 @@ export const ARIZONA_GAMES: GameDefinition[] = [
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "09:00 PM",
-    daysOfWeek: [0, 1, 2, 3, 4, 5, 6], // Daily
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_az",
   },
-
-  // -----------------------
-  // PICK 3
-  // -----------------------
   {
     game_id: "pick3_az",
     state: "AZ",
@@ -60,6 +46,7 @@ export const ARIZONA_GAMES: GameDefinition[] = [
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "09:00 PM",
-    daysOfWeek: [0, 1, 2, 3, 4, 5, 6], // Daily
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_az",
   },
 ];

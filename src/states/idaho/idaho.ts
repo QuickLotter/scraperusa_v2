@@ -1,41 +1,6 @@
-// src/states/idaho/idaho.ts
-
 import { GameDefinition } from "../../types";
 
 export const IDAHO_GAMES: GameDefinition[] = [
-  // -----------------------
-  // LOTTO AMERICA
-  // -----------------------
-  {
-    game_id: "lottoamerica_id",
-    state: "ID",
-    displayName: "Lotto America",
-    url: "https://www.lotteryusa.com/idaho/lotto-america/",
-    mainNumbers: 5,
-    hasExtraBall: true,
-    supportsCashValue: true,
-    drawTimeET: "11:00 PM",
-    daysOfWeek: [2, 6], // Wed, Sat
-  },
-
-  // -----------------------
-  // LUCKY FOR LIFE
-  // -----------------------
-  {
-    game_id: "luckyforlife_id",
-    state: "ID",
-    displayName: "Lucky for Life",
-    url: "https://www.lotteryusa.com/idaho/lucky-4-life/",
-    mainNumbers: 5,
-    hasExtraBall: true,
-    supportsCashValue: false,
-    drawTimeET: "10:38 PM",
-    daysOfWeek: [0, 1, 2, 3, 4, 5, 6], // Daily
-  },
-
-  // -----------------------
-  // IDAHO CASH
-  // -----------------------
   {
     game_id: "idahocash_id",
     state: "ID",
@@ -45,12 +10,9 @@ export const IDAHO_GAMES: GameDefinition[] = [
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "08:00 PM",
-    daysOfWeek: [1, 3, 6], // Mon, Wed, Sat
+    daysOfWeek: [1, 3, 5],
+    table: "results_id",
   },
-
-  // -----------------------
-  // PICK 4 — DAY
-  // -----------------------
   {
     game_id: "pick4day_id",
     state: "ID",
@@ -59,13 +21,10 @@ export const IDAHO_GAMES: GameDefinition[] = [
     mainNumbers: 4,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "01:59 PM",
+    drawTimeET: "01:00 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_id",
   },
-
-  // -----------------------
-  // PICK 4 — NIGHT
-  // -----------------------
   {
     game_id: "pick4night_id",
     state: "ID",
@@ -74,28 +33,22 @@ export const IDAHO_GAMES: GameDefinition[] = [
     mainNumbers: 4,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "07:59 PM",
+    drawTimeET: "08:00 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_id",
   },
-
-  // -----------------------
-  // PICK 3 — DAY
-  // -----------------------
   {
     game_id: "pick3day_id",
     state: "ID",
     displayName: "Pick 3 Day",
-    url: "https://www.lotteryusa.com/idaho/midday-pick-3/",
+    url: "https://www.lotteryusa.com/idaho/pick-3-day/",
     mainNumbers: 3,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "01:59 PM",
+    drawTimeET: "01:00 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_id",
   },
-
-  // -----------------------
-  // PICK 3 — NIGHT
-  // -----------------------
   {
     game_id: "pick3night_id",
     state: "ID",
@@ -104,7 +57,31 @@ export const IDAHO_GAMES: GameDefinition[] = [
     mainNumbers: 3,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "07:59 PM",
+    drawTimeET: "08:00 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_id",
+  },
+  // Multi-state → results_all
+  {
+    game_id: "lottoamerica",
+    state: "ID",
+    displayName: "Lotto America",
+    url: "https://www.lotteryusa.com/idaho/lotto-america/",
+    mainNumbers: 5,
+    hasExtraBall: true,
+    supportsCashValue: true,
+    drawTimeET: "11:00 PM",
+    daysOfWeek: [1, 3, 5],
+  },
+  {
+    game_id: "luckyforlife",
+    state: "ID",
+    displayName: "Lucky for Life",
+    url: "https://www.lotteryusa.com/idaho/lucky-for-life/",
+    mainNumbers: 5,
+    hasExtraBall: true,
+    supportsCashValue: false,
+    drawTimeET: "10:38 PM",
+    daysOfWeek: [1, 4],
   },
 ];

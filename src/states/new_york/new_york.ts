@@ -1,6 +1,7 @@
 import { GameDefinition } from "../../types";
 
-export const NEW_YORK_GAMES: GameDefinition[] = [
+// Jogos nacionais/multi-state → sem 'table' → salvam em results_all
+const MULTISTATE_NY: GameDefinition[] = [
   {
     game_id: "megamillions",
     state: "NY",
@@ -12,7 +13,6 @@ export const NEW_YORK_GAMES: GameDefinition[] = [
     drawTimeET: "11:00 PM",
     daysOfWeek: [2, 5],
   },
-
   {
     game_id: "powerball",
     state: "NY",
@@ -24,7 +24,6 @@ export const NEW_YORK_GAMES: GameDefinition[] = [
     drawTimeET: "11:00 PM",
     daysOfWeek: [1, 4, 6],
   },
-
   {
     game_id: "powerballdp",
     state: "NY",
@@ -36,43 +35,45 @@ export const NEW_YORK_GAMES: GameDefinition[] = [
     drawTimeET: "11:00 PM",
     daysOfWeek: [1, 4, 6],
   },
-
   {
     game_id: "millionaire4life",
     state: "NY",
-    displayName: "millionaire4life",
+    displayName: "Millionaire for Life",
     url: "https://www.lotteryusa.com/new-york/millionaire-for-life/",
     mainNumbers: 5,
     hasExtraBall: true,
-    supportsCashValue: true,
-    drawTimeET: "09:00 PM",
+    supportsCashValue: false,
+    drawTimeET: "11:00 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
   },
+];
 
+// Jogos exclusivos NY → salvam em results_ny
+const NY_GAMES: GameDefinition[] = [
   {
     game_id: "pick10_ny",
     state: "NY",
     displayName: "Pick 10",
     url: "https://www.lotteryusa.com/new-york/pick-10/",
-    mainNumbers: 20,
+    mainNumbers: 10,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "08:30 PM",
+    drawTimeET: "07:30 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ny",
   },
-
   {
     game_id: "lotto_ny",
     state: "NY",
-    displayName: "NY Lotto",
+    displayName: "Lotto",
     url: "https://www.lotteryusa.com/new-york/lotto/",
     mainNumbers: 6,
-    hasExtraBall: true,
-    supportsCashValue: false,
-    drawTimeET: "08:15 PM",
+    hasExtraBall: false,
+    supportsCashValue: true,
+    drawTimeET: "11:21 PM",
     daysOfWeek: [3, 6],
+    table: "results_ny",
   },
-
   {
     game_id: "take5midday_ny",
     state: "NY",
@@ -83,8 +84,8 @@ export const NEW_YORK_GAMES: GameDefinition[] = [
     supportsCashValue: false,
     drawTimeET: "02:30 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ny",
   },
-
   {
     game_id: "take5evening_ny",
     state: "NY",
@@ -93,22 +94,22 @@ export const NEW_YORK_GAMES: GameDefinition[] = [
     mainNumbers: 5,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "08:30 PM",
+    drawTimeET: "10:30 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ny",
   },
-
   {
     game_id: "win4midday_ny",
     state: "NY",
     displayName: "Win 4 Midday",
-    url: "https://www.lotteryusa.com/new-york/midday-win-4/",
+    url: "https://www.lotteryusa.com/new-york/win-4-midday/",
     mainNumbers: 4,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "02:30 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ny",
   },
-
   {
     game_id: "win4evening_ny",
     state: "NY",
@@ -117,22 +118,22 @@ export const NEW_YORK_GAMES: GameDefinition[] = [
     mainNumbers: 4,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "08:30 PM",
+    drawTimeET: "10:30 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ny",
   },
-
   {
     game_id: "numbersmidday_ny",
     state: "NY",
     displayName: "Numbers Midday",
-    url: "https://www.lotteryusa.com/new-york/midday-numbers/",
+    url: "https://www.lotteryusa.com/new-york/numbers-midday/",
     mainNumbers: 3,
     hasExtraBall: false,
     supportsCashValue: false,
     drawTimeET: "02:30 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ny",
   },
-
   {
     game_id: "numbersevening_ny",
     state: "NY",
@@ -141,7 +142,13 @@ export const NEW_YORK_GAMES: GameDefinition[] = [
     mainNumbers: 3,
     hasExtraBall: false,
     supportsCashValue: false,
-    drawTimeET: "08:30 PM",
+    drawTimeET: "10:30 PM",
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ny",
   },
+];
+
+export const NEW_YORK_GAMES: GameDefinition[] = [
+  ...MULTISTATE_NY,
+  ...NY_GAMES,
 ];
