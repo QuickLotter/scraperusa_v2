@@ -146,6 +146,18 @@ const NY_GAMES: GameDefinition[] = [
     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
     table: "results_ny",
   },
+  {
+    game_id: "quickdraw_ny",
+    state: "NY",
+    displayName: "Quick Draw",
+    url: "https://nylottery.ny.gov/quick-draw",
+    mainNumbers: 20,
+    hasExtraBall: true,   // bonus ball (purple)
+    supportsCashValue: false,
+    drawTimeET: "continuous", // every 4 minutes
+    daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    table: "results_ny",
+  },
 ];
 
 export const NEW_YORK_GAMES: GameDefinition[] = [
