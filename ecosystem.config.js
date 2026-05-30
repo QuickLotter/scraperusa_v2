@@ -20,6 +20,24 @@ module.exports = {
         SUPABASE_SERVICE_ROLE: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....",
       },
     },
+    {
+      name: "quickdraw_watcher",
+
+      script: "source/dist/quickdraw/main.js",
+      cwd: "/opt/scraperusa_v2",
+
+      // Roda continuamente — reinicia se cair
+      autorestart: true,
+      watch: false,
+      max_restarts: 10,
+      restart_delay: 5000,
+
+      env: {
+        NODE_ENV: "production",
+        SUPABASE_URL: "https://hlthyxpkwvfdqqrihlkg.supabase.co",
+        SUPABASE_SERVICE_ROLE: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....",
+      },
+    },
   ],
 
   deploy: {
