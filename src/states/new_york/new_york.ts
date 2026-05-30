@@ -26,6 +26,18 @@ export const NEW_YORK_GAMES: GameDefinition[] = [
   },
 
   {
+    game_id: "powerballdp",
+    state: "NY",
+    displayName: "Powerball Double Play",
+    url: "https://www.lotteryusa.com/new-york/powerball-double-play/",
+    mainNumbers: 5,
+    hasExtraBall: true,
+    supportsCashValue: false,
+    drawTimeET: "11:00 PM",
+    daysOfWeek: [1, 4, 6],
+  },
+
+  {
     game_id: "millionaire4life",
     state: "NY",
     displayName: "millionaire4life",

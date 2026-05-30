@@ -1,46 +1,6 @@
 import { GameDefinition } from "../../types";
 
 export const FLORIDA_GAMES: GameDefinition[] = [
-  // ── Multi-state ────────────────────────────────────────────
-  {
-    game_id: "megamillions_fl",
-    state: "FL",
-    displayName: "Mega Millions",
-    url: "https://www.lotteryusa.com/florida/mega-millions/",
-    mainNumbers: 5,
-    hasExtraBall: true,
-    supportsCashValue: true,
-    drawTimeET: "11:00 PM",
-    daysOfWeek: [2, 5],
-    table: "results_fl",
-  },
-
-  {
-    game_id: "powerball_fl",
-    state: "FL",
-    displayName: "Powerball",
-    url: "https://www.lotteryusa.com/florida/powerball/",
-    mainNumbers: 5,
-    hasExtraBall: true,
-    supportsCashValue: true,
-    drawTimeET: "11:00 PM",
-    daysOfWeek: [1, 4, 6],
-    table: "results_fl",
-  },
-
-  {
-    game_id: "powerballdp_fl",
-    state: "FL",
-    displayName: "Powerball Double Play",
-    url: "https://www.lotteryusa.com/florida/powerball-double-play/",
-    mainNumbers: 5,
-    hasExtraBall: true,
-    supportsCashValue: false,
-    drawTimeET: "11:00 PM",
-    daysOfWeek: [1, 4, 6],
-    table: "results_fl",
-  },
-
   // ── Florida exclusivos ─────────────────────────────────────
   {
     game_id: "floridalotto_fl",
