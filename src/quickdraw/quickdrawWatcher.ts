@@ -10,7 +10,7 @@ const ALL_DRAWS_URL = "https://nylottery.ny.gov/nyl-api/games/all/draws";
 const HISTORY_URL =
   "https://nylottery.ny.gov/drupal-api/api/v2/winning_numbers?format=json&nid=400&sort_by=draw_number&page=";
 
-const POLL_INTERVAL_MS = 60 * 1000; // 1 minuto (sorteio a cada 4 min)
+const POLL_INTERVAL_MS = 30 * 1000; // 30 segundos
 
 const HEADERS = {
   "User-Agent":
